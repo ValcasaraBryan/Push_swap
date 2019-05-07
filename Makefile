@@ -2,9 +2,9 @@ CHECK = checker
 
 PUSH = push_swap
 
-SRC = srcs/main.c
+SRC = srcs/push_swap.c
 
-OBJ = objets/main.o
+OBJ = objets/push_swap.o
 
 LIB = libft/libft.a
 
@@ -12,7 +12,7 @@ INCL = includes
 
 CC = @gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I includes -I libft/includes
 
 all : lib $(CHECK)
 
@@ -22,13 +22,17 @@ objets :
 lib : Makefile objets
 	@make -C libft
 
-$(OBJ) : $(LIB) $(SRC) Makefile
+$(OBJ) : $(LIB) $(SRC) Makefile includes/push_swap.h
 	@$(CC) $(CFLAGS) $(SRC) -c -o $@
 	@echo "Creation objets Done !"
 
 $(CHECK) : $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $@
+	@$(CC) $(CFLAGS) $(LIB) $(OBJ) main.c -o $@
 	@echo "Compilation checker done !"
+	@echo "--------------------------"
+
+exe : all
+	@./$(CHECK)
 
 clean :
 	@make clean -C libft
@@ -40,3 +44,5 @@ fclean : clean
 	@rm -rf objets
 
 re : fclean all
+
+.PHONY = objets exe clean fclean re
