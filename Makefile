@@ -6,6 +6,8 @@ SRC = srcs/main.c
 
 OBJ = objets/main.o
 
+objets = 0
+
 LIB = libft/libft.a
 
 INCL = includes
@@ -19,6 +21,10 @@ all : lib $(CHECK)
 
 lib : Makefile
 	@make -C libft
+ifneq (objets, 0)
+	@mkdir objets/
+objets = 1
+endif
 
 $(OBJ) : $(LIB) $(SRC) Makefile
 	@$(CC) $(CFLAGS) $(SRC) -c -o $@
@@ -35,5 +41,7 @@ clean :
 fclean : clean
 	@make fclean -C libft
 	@rm -rf $(CHECK)
+	@rm -rf objets
+objets = 0
 
 re : fclean all
