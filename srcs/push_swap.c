@@ -14,5 +14,4 @@
 
 void    push_swap(void)
 {
-    ft_printf("coucou\n");
 }
