@@ -132,7 +132,9 @@ SRC =	srcs/free/free_tab_str.c\
 		srcs/ft_printf/conversion.c\
 		srcs/ft_printf/conversion_two.c\
 		srcs/ft_printf/conversion_three.c\
-		srcs/ft_printf/conversion_four.c
+		srcs/ft_printf/conversion_four.c\
+		\
+		srcs/ft_len/ft_len_tab_str.c
 
 OBJET = $(SRC:.c=.o)
 

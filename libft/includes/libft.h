@@ -161,4 +161,8 @@ long				ft_recursive_power(long nb, int power);
 int					ft_fibonacci(int index);
 int					ft_is_prime(int nb);
 int					ft_find_next_prime(int nb);
+/*
+**	ft_len
+*/
+int					ft_len_tab_str(char **tab);
 #endif

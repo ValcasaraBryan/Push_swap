@@ -23,14 +23,13 @@ int		main(int argc, char **argv)
 	int i;
 
 	if (argc == 1)
-		ft_printf("ERROR\n");
-	if (argc == 2)
 	{
-		push_swap(argv[1]);
+		ft_printf("ERROR\n");
 	}
-	if (argc > 2)
+	else if (argc > 1)
 	{
 		i = 1;
+		// push_swap(argv[1]);
 		while (i < argc)
 			ft_printf("%s\n", argv[i++]);
 	}

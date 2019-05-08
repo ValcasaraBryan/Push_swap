@@ -17,8 +17,22 @@
 #include "ft_printf.h"
 #include "get_next_line.h"
 
+enum option { verbose = 'v', help = 'h' };
+
+typedef struct		s_data
+{
+	char			**av;
+	char			**tab;
+	int				len;
+	int				index;
+	int				fd;
+	int				option;
+}					t_data;
+
 int		push_swap(char *str);
 
-int		checker(char *str);
+int		pars_arg(t_data *data);
+int		pars_option(t_data *data);
+int		checker(int ac, char **av);
 
 #endif
