@@ -150,7 +150,9 @@ $(OBJET): includes/libft.h includes/ft_printf.h includes/get_next_line.h Makefil
 $(NAME) : $(OBJET)
 	@ar rc $@ $^
 	@ranlib $@
-	@echo "Creation libft.a Done !"
+	@echo "Creation libft.a	Done !"
+	@echo "-------------------------------"
+
 
 comp : $(NAME)
 ifeq ($(EXE), 0)

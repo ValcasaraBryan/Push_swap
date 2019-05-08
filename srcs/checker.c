@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brvalcas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/07 18:37:04 by brvalcas         ###   ########.fr       */
+/*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
+/*   Updated: 2019/05/07 18:35:02 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "push_swap.h"
 
-#include "libft.h"
-#include "ft_printf.h"
-#include "get_next_line.h"
+int		checker(char *str)
+{
+	ft_printf("%s\n", str);
+	return (1);
+}
 
-int		push_swap(char *str);
+int		main(int argc, char **argv)
+{
+	int i;
 
-int		checker(char *str);
-
-#endif
+	if (argc == 1)
+		ft_printf("KO\n");
+	if (argc == 2)
+	{
+		checker(argv[1]);
+	}
+	if (argc > 2)
+	{
+		i = 1;
+		while (i < argc)
+			ft_printf("%s\n", argv[i++]);
+	}
+	return (0);
+}

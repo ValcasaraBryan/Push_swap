@@ -2,9 +2,15 @@ CHECK = checker
 
 PUSH = push_swap
 
-SRC = srcs/push_swap.c
+arg =
 
-OBJ = objets/push_swap.o
+SRC = srcs/%.c
+
+OBJ_CHECKER = objets/checker.o
+
+OBJ_PUSH = objets/push_swap.o
+
+OBJ = objets/%.o
 
 LIB = libft/libft.a
 
@@ -14,7 +20,7 @@ CC = @gcc
 
 CFLAGS = -Wall -Wextra -Werror -I includes -I libft/includes
 
-all : lib $(CHECK)
+all : lib $(CHECK) $(PUSH)
 
 objets :
 	@mkdir objets
@@ -22,25 +28,37 @@ objets :
 lib : Makefile objets
 	@make -C libft
 
-$(OBJ) : $(LIB) $(SRC) Makefile includes/push_swap.h
-	@$(CC) $(CFLAGS) $(SRC) -c -o $@
-	@echo "Creation objets Done !"
+$(OBJ) : $(SRC) $(LIB) Makefile includes/push_swap.h
+	@$(CC) $(CFLAGS) $< -c -o $@
+	@echo "Creation objets		Done !"
 
-$(CHECK) : $(OBJ)
-	@$(CC) $(CFLAGS) $(LIB) $(OBJ) main.c -o $@
-	@echo "Compilation checker done !"
-	@echo "--------------------------"
+$(CHECK) : $(OBJ_CHECKER)
+	@$(CC) $(CFLAGS) $(LIB) $(OBJ_CHECKER) -o $@
+	@echo "Compilation checker	Done !"
+	@echo "-------------------------------"
 
-exe : all
-	@./$(CHECK)
+$(PUSH) : $(OBJ_PUSH)
+	@$(CC) $(CFLAGS) $(LIB) $(OBJ_PUSH) -o $@
+	@echo "Compilation push_swap	Done !"
+	@echo "-------------------------------"
+
+
+exe_check : $(CHECK)
+	@./$(CHECK) $(arg)
+
+exe_push : $(PUSH)
+	@./$(PUSH) $(arg)
+
 
 clean :
 	@make clean -C libft
-	@rm -rf $(OBJ)
+	@rm -rf $(OBJ_CHECKER)
+	@rm -rf $(OBJ_PUSH)
 
 fclean : clean
 	@make fclean -C libft
 	@rm -rf $(CHECK)
+	@rm -rf $(PUSH)
 	@rm -rf objets
 
 re : fclean all
