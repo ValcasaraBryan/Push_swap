@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brvalcas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 17:12:51 by brvalcas          #+#    #+#             */
-/*   Updated: 2018/04/04 17:13:34 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/09 21:14:04 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int					ft_putstr_len(const char *str, size_t len, int fd);
 **	ft_str
 */
 int					ft_str_is_digit(char *str);
+int					ft_str_is_int(char *str);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strchr(const char *s, int c);
 void				ft_strclr(char *s);

@@ -6,7 +6,8 @@ arg =
 
 SRC = srcs/%.c
 
-OBJ_CHECKER = objets/checker.o
+OBJ_CHECKER =	objets/checker.o\
+				objets/ft_intsplit.o
 
 OBJ_PUSH = objets/push_swap.o
 
