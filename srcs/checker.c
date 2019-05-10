@@ -52,7 +52,7 @@ void	print_patern_one(t_data *data)
 {
 	int	i;
 
-	i = data->index;
+	i = data->index - 1;
 	ft_printf("./checker ");
 	if (i < data->len && data->len > 2)
 		while (++i < data->len)
@@ -66,7 +66,7 @@ void	print_patern_two(t_data *data)
 {
 	int	i;
 
-	i = data->index;
+	i = data->index - 1;
 	ft_printf("./checker \"");
 	if (i < data->len && data->len > 2)
 		while (++i < data->len)
