@@ -54,7 +54,7 @@ void	print_patern_one(t_data *data)
 
 	i = data->index - 1;
 	ft_printf("./checker ");
-	if (i < data->len && data->len > 2)
+	if (i < data->len && ((data->len > 2) || !(check_other_arg(data, i + 1))))
 		while (++i < data->len)
 			print_arg(data->av[i], check_other_arg(data, i + 1));
 	else
@@ -68,7 +68,7 @@ void	print_patern_two(t_data *data)
 
 	i = data->index - 1;
 	ft_printf("./checker \"");
-	if (i < data->len && data->len > 2)
+	if (i < data->len && ((data->len > 2) || !(check_other_arg(data, i + 1))))
 		while (++i < data->len)
 			print_arg(data->av[i], check_other_arg(data, i + 1));
 	else
