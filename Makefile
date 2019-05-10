@@ -44,10 +44,10 @@ $(PUSH) : $(OBJ_PUSH)
 	@echo "-------------------------------"
 
 
-exe_check : $(CHECK)
+exe_check : all $(CHECK)
 	@./$(CHECK) $(arg)
 
-exe_push : $(PUSH)
+exe_push : all $(PUSH)
 	@./$(PUSH) $(arg)
 
 

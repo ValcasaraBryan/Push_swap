@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/09 22:42:36 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:06:40 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,16 +170,16 @@ int			checker(int ac, char **av)
 		return (FALSE);
 	data.len = ac - 2;
 	data.index = -1;
-	head = data.tab->prev;
-	while (data.tab->next)
+	head = data.tab;
+	if (head->prev->next)
+		head->prev->next = NULL;
+	while (head->next)
 	{
-		if (data.tab == head)
-			break ;
-		ft_printf("%14p <-- %14p --> %14p\n", data.tab->prev, data.tab, data.tab->next);
-		data.tab = data.tab->next;
+		ft_printf("%14p <-- %14p --> %14p | %d\n", head->prev, head, head->next, head->val);
+		head = head->next;
 	}
-		ft_printf("%14p <-- %14p --> %14p\n", data.tab->prev, data.tab, data.tab->next);
-			ft_printf("\n");
+		ft_printf("%14p <-- %14p --> %14p | %d\n", head->prev, head, head->next, head->val);
+		// ft_printf("%d\n", head->val);
 
 	// while (++data.index < data.len)
 	// {

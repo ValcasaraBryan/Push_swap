@@ -6,48 +6,73 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 21:43:11 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/09 22:42:13 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:03:57 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_val	*new_lst(const char *s)
+static t_val	*return_list(t_val *list, char **s)
+{
+	free(*s);
+	*s = NULL;
+	return (list);
+}
+
+static t_val	*new_lst(char **s)
 {
 	t_val		*new;
 
-	if (!(new = (t_val *)malloc(sizeof (t_val))))
-		return (NULL);
-	if (!ft_str_is_int((char *)s))
-		return (NULL);
-	new->val = ft_atoi(s);
+	if (!ft_str_is_int(*s))
+		return (return_list(NULL, s));
+	if (!(new = (t_val *)malloc(sizeof(t_val))))
+		return (return_list(NULL, s));
+	new->val = ft_atoi(*s);
 	new->next = NULL;
 	new->prev = NULL;
-	return (new);
+	return (return_list(new, s));
 }
 
-static void		add_lst(t_val **old, const char *s)
+void		erase_list(t_val **old)
 {
 	t_val		*tmp;
 
+	if ((*old)->prev)
+		(*old)->prev->next = NULL;
+	while (*old)
+	{
+		tmp = (*old)->next;
+		free((*old));
+		(*old) = NULL;
+		(*old) = tmp;
+	}
+}
+
+static int		add_lst(t_val **old, char **s)
+{
+	t_val		*tmp;
+	t_val		*buf;
 	tmp = NULL;
 	if (!*old)
-	{
-        *old = new_lst(s);
-        return ;
-	}
+		return (!(*old = new_lst(s)) ? 0 : 1);
 	tmp = *old;
 	while (tmp->next)
-    {
-        if (tmp == (*old)->prev)
-            break ;
-    	tmp = tmp->next;
+	{
+		if (tmp == (*old)->prev)
+			break ;
+		tmp = tmp->next;
     }
-	tmp->next = new_lst(s);	
+	if (!(buf = new_lst(s)))
+	{
+		erase_list(old);
+		return (0);
+	}
+	tmp->next = buf;
 	tmp->next->prev = tmp;
     tmp->next->next = *old;
     if ((*old)->prev != tmp->next)
         (*old)->prev = tmp->next;
+	return (1);
 }
 
 t_val			*intsplit(const char *s, char c)
@@ -55,16 +80,22 @@ t_val			*intsplit(const char *s, char c)
 	size_t	i;
 	size_t	j;
 	t_val	*split;
+	char	*tmp;
 
 	i = 0;
 	split = NULL;
+	tmp = NULL;
 	while (s[i])
 	{
 		j = i;
 		while (s[i] != c && s[i])        
 			i++;
 		if ((s[j] != c && s[i] == c) || !s[i])
-			add_lst(&split, ft_strndup(&s[j], i - j));
+		{
+			tmp = ft_strndup(&s[j], i - j);
+			if (!(add_lst(&split, &tmp)))
+				return (NULL);
+		}
 		while (s[i] == c && s[i])
 			i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 17:12:51 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/09 21:14:04 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 14:36:44 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <wchar.h>
-# include <locale.h>
 # include <limits.h>
 
 typedef struct		s_list
