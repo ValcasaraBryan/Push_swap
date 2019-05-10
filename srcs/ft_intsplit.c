@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 21:43:11 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/10 16:03:57 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:37:12 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_val	*new_lst(char **s)
 	return (return_list(new, s));
 }
 
-void		erase_list(t_val **old)
+void			erase_list(t_val **old)
 {
 	t_val		*tmp;
 
@@ -52,6 +52,7 @@ static int		add_lst(t_val **old, char **s)
 {
 	t_val		*tmp;
 	t_val		*buf;
+
 	tmp = NULL;
 	if (!*old)
 		return (!(*old = new_lst(s)) ? 0 : 1);
@@ -61,7 +62,7 @@ static int		add_lst(t_val **old, char **s)
 		if (tmp == (*old)->prev)
 			break ;
 		tmp = tmp->next;
-    }
+	}
 	if (!(buf = new_lst(s)))
 	{
 		erase_list(old);
@@ -69,18 +70,18 @@ static int		add_lst(t_val **old, char **s)
 	}
 	tmp->next = buf;
 	tmp->next->prev = tmp;
-    tmp->next->next = *old;
-    if ((*old)->prev != tmp->next)
-        (*old)->prev = tmp->next;
+	tmp->next->next = *old;
+	if ((*old)->prev != tmp->next)
+		(*old)->prev = tmp->next;
 	return (1);
 }
 
 t_val			*intsplit(const char *s, char c)
 {
-	size_t	i;
-	size_t	j;
-	t_val	*split;
-	char	*tmp;
+	size_t		i;
+	size_t		j;
+	t_val		*split;
+	char		*tmp;
 
 	i = 0;
 	split = NULL;
@@ -88,7 +89,7 @@ t_val			*intsplit(const char *s, char c)
 	while (s[i])
 	{
 		j = i;
-		while (s[i] != c && s[i])        
+		while (s[i] != c && s[i])
 			i++;
 		if ((s[j] != c && s[i] == c) || !s[i])
 		{

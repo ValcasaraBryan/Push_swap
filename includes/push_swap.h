@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/09 21:50:58 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 17:43:06 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+# define ERROR		-1
 # define TRUE		1
 # define FALSE		0
 # define LEN_OPTION	6
@@ -33,6 +34,7 @@
 # define MSG_U		"usage : ./checker [-%s] [pattern] [file]\n"
 # define MSG_PA		"./checker -f [name_file]\n"
 # define MSG_PAT	"file -> all value on only one line separated by space caracter.\n\n"
+# define MSG_I		"checker: illegal option\n"
 # define MESSAGE_H	MSG_HELP MSG_V MSG_P MSG_F MSG_H
 
 typedef struct		s_val
@@ -47,14 +49,14 @@ typedef struct		s_data
 	char			**av;
 	int				len;
 	t_val			*tab;
+	char			*arg;
+	int				option[LEN_OPTION];
 	int				index;
 	int				fd;
-	int				option;
 }					t_data;
 
 int					push_swap(char *str);
 
-int					pars_arg(t_data *data);
 int					pars_option(t_data *data);
 int					checker(int ac, char **av);
 int					open_file(t_data *data);

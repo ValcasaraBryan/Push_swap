@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/10 16:06:40 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 17:44:44 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	error_arg(t_data *data)
 {
 	(void)data;
+	ft_printf(MSG_I);
 	ft_printf(MSG_U, OPTION_);
-	exit (FALSE);
 }
 
 void	print_patern_one(t_data *data)
@@ -69,7 +69,7 @@ int		print_help(t_data *data)
 int		verbose(t_data *data)
 {
 	data->index++;// v
-	data->option++;
+	// data->option++;
 	return (TRUE);
 }
 
@@ -108,100 +108,121 @@ void	print_patern_three(t_data *data)
 	ft_printf(MSG_PAT);
 }
 
-int		pars_option(t_data *data)
+int		pars_salut(t_data *data)
 {
-	int	i;
 	int	(**fonction)(struct s_data *data);
 
-	i = 1;
 	if (!(fonction = malloc(sizeof(fonction) * LEN_OPTION)))
 		return (FALSE);
 	fonction[VERBOSE] = &verbose;
 	fonction[HELP] = &print_help;
 	fonction[FILE] = &open_file;
 	fonction[PATERN] = &print_patern;
-	// ft_printf("%s\n", OPTION_[0]);
-
-	if (!ft_strcmp(data->av[data->index] + i, "h"))
-		fonction[1](data);
-	if (!ft_strcmp(data->av[data->index] + i, "p"))
-		fonction[3](data);
-	if (!ft_strcmp(data->av[data->index] + i, "v"))
-		return (fonction[0](data));
-	if (!ft_strcmp(data->av[data->index] + i, "f"))
-		if (fonction[2](data))
-			return (TRUE);
+	// if (!ft_strcmp(data->av[data->index], "h"))
+		// fonction[1](data);
+	// if (!ft_strcmp(data->av[data->index], "p"))
+		// fonction[3](data);
+	// if (!ft_strcmp(data->av[data->index], "v"))
+		// return (fonction[0](data));
+	// if (!ft_strcmp(data->av[data->index], "f"))
+		// if (fonction[2](data))
+			// return (TRUE);
 	ft_printf("checker: illegal option\n");
 	error_arg(data);
 	return (FALSE);
 }
 
-int		pars_arg(t_data *data)
+int		pars_option(t_data *data)
 {
-	long long	nb;
+	int		i;
 
 	if (!data->av)
+		return (ERROR);
+	i = 1;
+	if (data->av[data->index][0] != '-')
 		return (FALSE);
-	nb = ft_atoll(data->av[data->index]);
-	if (nb == 0)
-	{
-		if (*data->av[data->index] != '-' && !ft_str_is_digit(data->av[data->index]))
-			return (FALSE);
-		else if (*data->av[data->index] == '-')
-			if (!(pars_option(data)))
-				return (FALSE);
-	}
+	while (data->av[data->index][i] && data->av[data->index][i] != ' '
+		&& data->av[data->index][i] != '\t')
+		i++;
+	if (!(data->arg = ft_strndup(data->av[data->index] + 1, i - 1)))
+		return (ERROR);
+	i = -1;
+	while (data->arg[++i])
+		if (params(data->arg[i], OPTION_) == 0)
+			return (ERROR);
+		else
+			data->option[ft_strnchr(OPTION_, data->arg[i], LEN_OPTION)] = 1;
 	return (TRUE);
 }
 
-int			checker(int ac, char **av)
+void		print_list(t_data *data, t_val *head)
 {
-	t_data	data;
-	t_val	*head;
-	data.index = 0;
-	data.tab = NULL;
-	data.len = ac;
-	data.av = av;
-	data.fd = -1;
-	data.option = 0;
-	if (data.len <= 1)
-		return (FALSE);
-	if (!(data.tab = intsplit(av[1], ' ')))
-		return (FALSE);
-	data.len = ac - 2;
-	data.index = -1;
-	head = data.tab;
-	if (head->prev->next)
+	head = data->tab;
+	if (head->prev)
 		head->prev->next = NULL;
 	while (head->next)
 	{
 		ft_printf("%14p <-- %14p --> %14p | %d\n", head->prev, head, head->next, head->val);
 		head = head->next;
 	}
-		ft_printf("%14p <-- %14p --> %14p | %d\n", head->prev, head, head->next, head->val);
-		// ft_printf("%d\n", head->val);
+	ft_printf("%14p <-- %14p                    | %d\n", head->prev, head, head->val);
+}
 
-	// while (++data.index < data.len)
-	// {
-		// if (pars_arg(&data) && data.tab[data.index] && data.option == 0)
-			// ft_printf("%s\n", data.tab[data.index]);
-		// else
-		// {
-			// if (data.tab != av)
-				// free_tab_str(&data.tab);
-			// return (FALSE);
-		// }
-	// }
-	// if (data.tab != av)
-		// free_tab_str(&data.tab);
+void		init_data(t_data *data, int ac, char **av)
+{
+	int		i;
+	data->index = 1;
+	data->tab = NULL;
+	data->len = ac;
+	data->av = av;
+	data->fd = -1;
+	data->arg = NULL;
+	i = -1;
+	while (++i < LEN_OPTION)
+		data->option[i] = 0;
+}
+
+int			checker(int ac, char **av)
+{
+	t_data	data;
+	int		ret;
+
+	init_data(&data, ac, av);
+	if (data.len <= 1)
+		return (FALSE);
+	if ((ret = pars_option(&data)) == FALSE)
+	{}
+	else if (ret == TRUE)
+	{
+		ft_printf("%d\n", data.option[0]);
+		ft_printf("%d\n", data.option[1]);
+		ft_printf("%d\n", data.option[2]);
+		ft_printf("%d\n", data.option[3]);
+		ft_printf("%d\n", data.option[4]);
+		ft_printf("%d\n", data.option[5]);
+	}
+	else if (ret == ERROR)
+	{
+		error_arg(&data);
+		return (ERROR);
+	}
+
+	if (!(data.tab = intsplit(data.av[1], ' ')))
+		return (FALSE);
+	// data.len = ac - 2;
+	// data.index = -1;
+	print_list(&data, data.tab);
 	return (TRUE);
 }
 
 int		main(int argc, char **argv)
 {
-	if (!(checker(argc, argv)))
+	int	ret;
+	if ((ret = checker(argc, argv)) == ERROR)
+		return (FALSE);
+	else if (ret == FALSE)
 		ft_printf("KO\n");
-	else
+	else if (ret == TRUE)
 		ft_printf("OK\n");
 	return (FALSE);
 }
