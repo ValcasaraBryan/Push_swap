@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/10 17:44:44 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/10 19:40:34 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,35 @@ void	error_arg(t_data *data)
 	(void)data;
 	ft_printf(MSG_I);
 	ft_printf(MSG_U, OPTION_);
+	erase_data(data);
+}
+
+void	print_arg(char *str, int val)
+{
+	char	**tab;
+	int		len;
+	int		i;
+
+	if (!(tab = ft_strsplit(str, ' ')))
+		return ;
+	i = -1;
+	len = ft_len_tab_str(tab);
+	while (tab[++i])
+		if (ft_str_is_int(tab[i]))
+		{
+			ft_printf("%s", tab[i]);
+			if (val || i < len - 1)
+				ft_printf(" ");
+		}
+	free_tab_str(&tab);
+}
+
+int		check_other_arg(t_data *data, int i)
+{
+	while (data->av[i])
+		if (ft_str_is_int(data->av[i++]))
+			return (1);
+	return (0);
 }
 
 void	print_patern_one(t_data *data)
@@ -25,17 +54,26 @@ void	print_patern_one(t_data *data)
 
 	i = data->index;
 	ft_printf("./checker ");
-	if (i < data->len - 1 && data->len > 3)
+	if (i < data->len && data->len > 2)
 		while (++i < data->len)
-		{
-			ft_printf("%s", data->av[i]);
-			if (i < data->len - 1)
-				ft_printf(" ");
-			else
-				ft_printf("\n");
-		}
+			print_arg(data->av[i], check_other_arg(data, i + 1));
 	else
-		ft_printf("1 2 3 4\n");
+		ft_printf("1 2 3 4");
+	ft_printf("\n");
+}
+
+void	print_patern_two(t_data *data)
+{
+	int	i;
+
+	i = data->index;
+	ft_printf("./checker \"");
+	if (i < data->len && data->len > 2)
+		while (++i < data->len)
+			print_arg(data->av[i], check_other_arg(data, i + 1));
+	else
+		ft_printf("1 2 3 4");
+	ft_printf("\"\n");
 }
 
 int		open_file(t_data *data)
@@ -60,10 +98,9 @@ int		open_file(t_data *data)
 
 int		print_help(t_data *data)
 {
-	ft_printf("%s", MESSAGE_H);
-	ft_printf("\n");
-	error_arg(data);
-	return (TRUE);
+	ft_printf(MESSAGE_H, OPTION_);
+	erase_data(data);
+	return (FALSE);
 }
 
 int		verbose(t_data *data)
@@ -73,63 +110,34 @@ int		verbose(t_data *data)
 	return (TRUE);
 }
 
-int		print_patern(t_data *data)
+void	erase_data(t_data *data)
+{
+	free(data->arg);
+	data->arg = NULL;
+}
+
+int		print_pattern(t_data *data)
 {
 	print_patern_one(data);
 	print_patern_two(data);
 	print_patern_three(data);
-	error_arg(data);
-	return (TRUE);
-}
-
-void	print_patern_two(t_data *data)
-{
-	int	i;
-
-	i = data->index;
-	ft_printf("./checker \"");
-	if (i < data->len - 1 && data->len > 3)
-		while (++i < data->len)
-		{
-			ft_printf("%s", data->av[i]);
-			if (i < data->len - 1)
-				ft_printf(" ");
-			else
-				ft_printf("\"\n");
-		}
-	else
-		ft_printf("1 2 3 4\"\n");
+	erase_data(data);
+	return (FALSE);
 }
 
 void	print_patern_three(t_data *data)
 {
 	(void)data;
 	ft_printf(MSG_PA);
-	ft_printf(MSG_PAT);
 }
 
 int		pars_salut(t_data *data)
 {
-	int	(**fonction)(struct s_data *data);
-
-	if (!(fonction = malloc(sizeof(fonction) * LEN_OPTION)))
-		return (FALSE);
-	fonction[VERBOSE] = &verbose;
-	fonction[HELP] = &print_help;
-	fonction[FILE] = &open_file;
-	fonction[PATERN] = &print_patern;
-	// if (!ft_strcmp(data->av[data->index], "h"))
-		// fonction[1](data);
-	// if (!ft_strcmp(data->av[data->index], "p"))
-		// fonction[3](data);
-	// if (!ft_strcmp(data->av[data->index], "v"))
-		// return (fonction[0](data));
-	// if (!ft_strcmp(data->av[data->index], "f"))
-		// if (fonction[2](data))
-			// return (TRUE);
-	ft_printf("checker: illegal option\n");
-	error_arg(data);
-	return (FALSE);
+	if (data->option[HELP])
+		return (print_help(data));
+	else if (data->option[PATTERN])
+		return (print_pattern(data));
+	return (TRUE);
 }
 
 int		pars_option(t_data *data)
@@ -146,6 +154,8 @@ int		pars_option(t_data *data)
 		i++;
 	if (!(data->arg = ft_strndup(data->av[data->index] + 1, i - 1)))
 		return (ERROR);
+	data->av[data->index] += i + 1;
+	// ft_printf("%s\n", data->av[data->index]);
 	i = -1;
 	while (data->arg[++i])
 		if (params(data->arg[i], OPTION_) == 0)
@@ -190,28 +200,31 @@ int			checker(int ac, char **av)
 	init_data(&data, ac, av);
 	if (data.len <= 1)
 		return (FALSE);
-	if ((ret = pars_option(&data)) == FALSE)
-	{}
-	else if (ret == TRUE)
+	while (data.index < ac)
 	{
-		ft_printf("%d\n", data.option[0]);
-		ft_printf("%d\n", data.option[1]);
-		ft_printf("%d\n", data.option[2]);
-		ft_printf("%d\n", data.option[3]);
-		ft_printf("%d\n", data.option[4]);
-		ft_printf("%d\n", data.option[5]);
+		if ((ret = pars_option(&data)) == FALSE)
+			break ;
+		else if (ret == TRUE)
+		{
+			if (!(pars_salut(&data)))
+				return (MSG);
+		}
+		else if (ret == ERROR)
+		{
+			error_arg(&data);
+			return (ERROR);
+		}
+		data.index++;
 	}
-	else if (ret == ERROR)
+	while (data.index < ac)
 	{
-		error_arg(&data);
-		return (ERROR);
+		ft_printf("%s\n", data.av[data.index++]);
 	}
-
-	if (!(data.tab = intsplit(data.av[1], ' ')))
-		return (FALSE);
+	// if (!(data.tab = intsplit(data.av[data.index], ' ')))
+		// return (FALSE);
 	// data.len = ac - 2;
 	// data.index = -1;
-	print_list(&data, data.tab);
+	// print_list(&data, data.tab);
 	return (TRUE);
 }
 
@@ -224,5 +237,6 @@ int		main(int argc, char **argv)
 		ft_printf("KO\n");
 	else if (ret == TRUE)
 		ft_printf("OK\n");
-	return (FALSE);
+	else
+		return (FALSE);
 }
