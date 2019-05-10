@@ -2,3 +2,4 @@ checker
 push_swap
 libft.a
 *.o
+*.dSYM
