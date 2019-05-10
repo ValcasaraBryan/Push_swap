@@ -19,6 +19,9 @@
 
 # define MSG		-2
 # define ERROR		-1
+# define S_ERR		2
+# define S_STD		1
+# define E_STD		1
 # define TRUE		1
 # define FALSE		0
 # define LEN_OPTION	4
@@ -58,16 +61,15 @@ typedef struct		s_data
 
 int					push_swap(char *str);
 
-int					pars_option(t_data *data);
+int					pars_option(t_data *data, int index);
 int					checker(int ac, char **av);
 int					open_file(t_data *data);
 
 void				erase_data(t_data *data);
-void				error_arg(t_data *data);
+int					error_arg(t_data *data, int val);
 int					print_help(t_data *data);
 int					print_patern(t_data *data);
 void				print_patern_one(t_data *data);
-void				print_patern_two(t_data *data);
 void				print_patern_three(t_data *data);
 
 t_val				*intsplit(const char *s, char c);

@@ -12,12 +12,34 @@
 
 #include "push_swap.h"
 
-void	error_arg(t_data *data)
+int		error_arg(t_data *data, int val)
 {
 	(void)data;
-	ft_printf(MSG_I);
-	ft_printf(MSG_U, OPTION_);
+	ft_fprintf(MSG_I, S_ERR);
+	ft_fprintf(MSG_U, S_ERR, OPTION_);
 	erase_data(data);
+	return (val);
+}
+
+int		print_help(t_data *data)
+{
+	ft_fprintf(MESSAGE_H, S_ERR, OPTION_);
+	erase_data(data);
+	return (FALSE);
+}
+
+
+int		print_pattern(t_data *data)
+{
+	ft_fprintf("./checker ", S_ERR);
+	print_patern_one(data);
+	ft_fprintf("\n", S_ERR);
+	ft_fprintf("./checker \"", S_ERR);
+	print_patern_one(data);
+	ft_fprintf("\"\n", S_ERR);
+	print_patern_three(data);
+	erase_data(data);
+	return (FALSE);
 }
 
 void	print_arg(char *str, int val)
@@ -33,9 +55,9 @@ void	print_arg(char *str, int val)
 	while (tab[++i])
 		if (ft_str_is_int(tab[i]))
 		{
-			ft_printf("%s", tab[i]);
+			ft_fprintf("%s", S_ERR, tab[i]);
 			if (val || i < len - 1)
-				ft_printf(" ");
+				ft_fprintf(" ", S_ERR);
 		}
 	free_tab_str(&tab);
 }
@@ -48,32 +70,38 @@ int		check_other_arg(t_data *data, int i)
 	return (0);
 }
 
+int		check_arg(t_data *data)
+{
+	char	**tab;
+	int		i;
+	int		j;
+	int		arg;
+
+	arg = 0;
+	i = 0;
+	while (++i < data->len)
+	{
+		if (!(tab = ft_strsplit(data->av[i], ' ')))
+			return (0);
+		j = 0;
+		while (tab[j])
+			if (ft_str_is_int(tab[j++]))
+				arg++;
+		free_tab_str(&tab);
+	}
+	return ((arg < 2) ? 0 : 1);
+}
+
 void	print_patern_one(t_data *data)
 {
 	int	i;
 
 	i = data->index - 1;
-	ft_printf("./checker ");
-	if (i < data->len && ((data->len > 2) || !(check_other_arg(data, i + 1))))
+	if (i < data->len && check_arg(data))
 		while (++i < data->len)
 			print_arg(data->av[i], check_other_arg(data, i + 1));
 	else
-		ft_printf("1 2 3 4");
-	ft_printf("\n");
-}
-
-void	print_patern_two(t_data *data)
-{
-	int	i;
-
-	i = data->index - 1;
-	ft_printf("./checker \"");
-	if (i < data->len && ((data->len > 2) || !(check_other_arg(data, i + 1))))
-		while (++i < data->len)
-			print_arg(data->av[i], check_other_arg(data, i + 1));
-	else
-		ft_printf("1 2 3 4");
-	ft_printf("\"\n");
+		ft_fprintf("1 2 3 4", S_ERR);
 }
 
 int		open_file(t_data *data)
@@ -81,7 +109,7 @@ int		open_file(t_data *data)
 	if (data->index + 1 == data->len - 1)
 	{
 		if ((data->fd = open(data->av[data->index + 1], O_RDWR)) <= -1)
-			ft_printf("Wrong file\n");
+			ft_fprintf("Wrong file\n", S_ERR);
 		else
 		{
 			data->index++;
@@ -89,18 +117,10 @@ int		open_file(t_data *data)
 		}
 	}
 	else if (data->index + 1 < data->len - 1)
-		ft_printf("Too many arguments\n");
+		ft_fprintf("Too many arguments\n", S_ERR);
 	else
-		ft_printf("Missing file name\n");
-	error_arg(data);
-	return (FALSE);
-}
-
-int		print_help(t_data *data)
-{
-	ft_printf(MESSAGE_H, OPTION_);
-	erase_data(data);
-	return (FALSE);
+		ft_fprintf("Missing file name\n", S_ERR);
+	return (error_arg(data, FALSE));
 }
 
 int		verbose(t_data *data)
@@ -116,22 +136,13 @@ void	erase_data(t_data *data)
 	data->arg = NULL;
 }
 
-int		print_pattern(t_data *data)
-{
-	print_patern_one(data);
-	print_patern_two(data);
-	print_patern_three(data);
-	erase_data(data);
-	return (FALSE);
-}
-
 void	print_patern_three(t_data *data)
 {
 	(void)data;
-	ft_printf(MSG_PA);
+	ft_fprintf(MSG_PA, S_ERR);
 }
 
-int		pars_salut(t_data *data)
+int		call_help(t_data *data)
 {
 	if (data->option[HELP])
 		return (print_help(data));
@@ -140,28 +151,30 @@ int		pars_salut(t_data *data)
 	return (TRUE);
 }
 
-int		pars_option(t_data *data)
+int		pars_option(t_data *data, int index)
 {
 	int		i;
+	int		j;
+	char	**tab;
 
 	if (!data->av)
 		return (ERROR);
-	i = 1;
-	if (data->av[data->index][0] != '-')
-		return (FALSE);
-	while (data->av[data->index][i] && data->av[data->index][i] != ' '
-		&& data->av[data->index][i] != '\t')
-		i++;
-	if (!(data->arg = ft_strndup(data->av[data->index] + 1, i - 1)))
+	if (!(tab = ft_strsplit(data->av[index], ' ')))
 		return (ERROR);
-	data->av[data->index] += i + 1;
-	// ft_printf("%s\n", data->av[data->index]);
 	i = -1;
-	while (data->arg[++i])
-		if (params(data->arg[i], OPTION_) == 0)
-			return (ERROR);
-		else
-			data->option[ft_strnchr(OPTION_, data->arg[i], LEN_OPTION)] = 1;
+	while (tab[++i])
+		if (tab[i][j = 0] == '-')
+			while (tab[i][++j])
+			{
+				if (params(tab[i][j], OPTION_) == 0)
+				{
+					free_tab_str(&tab);
+					return (ERROR);
+				}
+				else
+					data->option[ft_strnchr(OPTION_, tab[i][j], LEN_OPTION)] = 1;
+			}
+	free_tab_str(&tab);
 	return (TRUE);
 }
 
@@ -172,10 +185,10 @@ void		print_list(t_data *data, t_val *head)
 		head->prev->next = NULL;
 	while (head->next)
 	{
-		ft_printf("%14p <-- %14p --> %14p | %d\n", head->prev, head, head->next, head->val);
+		ft_fprintf("%14p <-- %14p --> %14p | %d\n", S_STD, head->prev, head, head->next, head->val);
 		head = head->next;
 	}
-	ft_printf("%14p <-- %14p                    | %d\n", head->prev, head, head->val);
+	ft_fprintf("%14p <-- %14p                    | %d\n", S_STD, head->prev, head, head->val);
 }
 
 void		init_data(t_data *data, int ac, char **av)
@@ -192,39 +205,44 @@ void		init_data(t_data *data, int ac, char **av)
 		data->option[i] = 0;
 }
 
+int			check_option(t_data *data)
+{
+	int		i;
+	
+	i = 0;
+	while (i < data->len)
+	{
+		if (pars_option(data, i) == ERROR)
+			return (error_arg(data, ERROR));
+		i++;
+	}
+	return (TRUE);
+}
+
 int			checker(int ac, char **av)
 {
 	t_data	data;
-	int		ret;
 
 	init_data(&data, ac, av);
 	if (data.len <= 1)
 		return (FALSE);
+	if (check_option(&data) == ERROR)
+		return (ERROR);
+	if (!(call_help(&data)))
+		return (MSG);
+	// int i = -1;
+	// while (++i < LEN_OPTION)
+		// ft_printf("\t%d\n", data.option[i]);
 	while (data.index < ac)
 	{
-		if ((ret = pars_option(&data)) == FALSE)
-			break ;
-		else if (ret == TRUE)
-		{
-			if (!(pars_salut(&data)))
-				return (MSG);
-		}
-		else if (ret == ERROR)
-		{
-			error_arg(&data);
-			return (ERROR);
-		}
-		data.index++;
-	}
-	while (data.index < ac)
-	{
-		ft_printf("%s\n", data.av[data.index++]);
+		ft_fprintf("%s\n", S_STD, data.av[data.index++]);
 	}
 	// if (!(data.tab = intsplit(data.av[data.index], ' ')))
 		// return (FALSE);
 	// data.len = ac - 2;
 	// data.index = -1;
 	// print_list(&data, data.tab);
+
 	return (TRUE);
 }
 
@@ -234,9 +252,9 @@ int		main(int argc, char **argv)
 	if ((ret = checker(argc, argv)) == ERROR)
 		return (FALSE);
 	else if (ret == FALSE)
-		ft_printf("KO\n");
+		ft_fprintf("KO\n", S_STD);
 	else if (ret == TRUE)
-		ft_printf("OK\n");
+		ft_fprintf("OK\n", S_STD);
 	else
 		return (FALSE);
 }
