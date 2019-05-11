@@ -18,6 +18,7 @@ int		error_val(t_data *data, int val, char ***tab)
 	free_tab_str(tab);
 	ft_fprintf(MSG_ERR, S_ERR);
 	erase_data(data);
+	// while (1);
 	return (val);
 }
 
@@ -28,6 +29,7 @@ int		error_arg(t_data *data, int val, char ***tab)
 	ft_fprintf(MSG_I, S_ERR);
 	ft_fprintf(MSG_U, S_ERR, OPTION_);
 	erase_data(data);
+	// while (1);
 	return (val);
 }
 
@@ -35,6 +37,7 @@ int		print_help(t_data *data)
 {
 	ft_fprintf(MESSAGE_H, S_ERR, OPTION_);
 	erase_data(data);
+	// while (1);
 	return (FALSE);
 }
 
@@ -49,6 +52,7 @@ int		print_pattern(t_data *data)
 	ft_fprintf("\"\n", S_ERR);
 	print_patern_three(data);
 	erase_data(data);
+	// while (1);
 	return (FALSE);
 }
 
@@ -165,18 +169,13 @@ int		call_help(t_data *data)
 	return (TRUE);
 }
 
-void	pars_val_file(t_data *data, char tab, int *file)
-{
-	(*file) = (data->option[FILE]
-		&& !*file && params(tab, &OPTION_[FILE]) == 0) ? 1 : 0;
-}
-
 int		pars_option(t_data *data, char *tab)
 {
 	int	j;
 
 	j = 0;
 	if (tab[j] == '-')
+	{
 		while (tab[++j])
 		{
 			if (params(tab[j], OPTION_) == 0)
@@ -184,27 +183,28 @@ int		pars_option(t_data *data, char *tab)
 			else
 				data->option[ft_strnchr(OPTION_, tab[j], LEN_OPTION)] = 1;
 		}
-	return (TRUE);
+		return (TRUE);
+	}
+	return (FALSE);
 }
 
-int		file_option(t_data *data, char *tab, int *file)
+int		file_option(t_data *data, char *tab, int ret)
 {
-	int	j;
-
-	j = 0;
-	if (tab[j] != '-' && !*file)
-	{
+	if (ret == TRUE && params(OPTION_[FILE], tab)
+		&& data->option[FILE] && !data->file)
+		data->file = 1;
+	else if (ret == FALSE && data->file)
+		data->file = 0;
+	else if (ret == FALSE && !data->file)
 		if (!(ft_str_is_int(tab)))
 			return (ERROR);
-	}
-	else
-		pars_val_file(data, tab[j], file);
 	return (TRUE);
 }
 
-int		pars(t_data *data, int index, int *file)
+int		pars(t_data *data, int index)
 {
 	int		i;
+	int		ret;
 	char	**tab;
 
 	if (!data->av)
@@ -214,9 +214,9 @@ int		pars(t_data *data, int index, int *file)
 	i = -1;
 	while (tab[++i])
 	{
-		if (pars_option(data, tab[i]) == ERROR)
+		if ((ret = pars_option(data, tab[i])) == ERROR)
 			return (error_arg(data, ERROR, &tab));
-		if (file_option(data, tab[i], file) == ERROR)
+		if (file_option(data, tab[i], ret) == ERROR)
 			return (error_val(data, ERROR, &tab));
 	}
 	free_tab_str(&tab);
@@ -244,6 +244,7 @@ void		init_data(t_data *data, int ac, char **av)
 	data->len = ac;
 	data->av = av;
 	data->fd = -1;
+	data->file = 0;
 	data->arg = NULL;
 	i = -1;
 	while (++i < LEN_OPTION)
@@ -252,13 +253,11 @@ void		init_data(t_data *data, int ac, char **av)
 
 int			check_val(t_data *data)
 {
-	int		flag;
 	int		i;
 
 	i = 0;
-	flag = 0;
 	while (++i < data->len)
-		if (pars(data, i, &flag) == ERROR)
+		if (pars(data, i) == ERROR)
 			return (ERROR);
 	return (TRUE);
 }

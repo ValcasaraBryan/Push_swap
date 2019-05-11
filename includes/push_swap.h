@@ -58,6 +58,7 @@ typedef struct		s_data
 	int				option[LEN_OPTION];
 	int				index;
 	int				fd;
+	int				file;
 }					t_data;
 
 /*
@@ -73,7 +74,6 @@ int					checker(int ac, char **av);
 **								in pars_option
 **									in error_arg
 **								in file_option
-**									in pars_val_file
 **									in error_val
 **						in call_help
 **							in print_help
@@ -85,11 +85,10 @@ int					checker(int ac, char **av);
 */
 void				init_data(t_data *data, int ac, char **av);
 int					check_val(t_data *data);
-int					pars(t_data *data, int index, int *file);
+int					pars(t_data *data, int index);
 int					pars_option(t_data *data, char *tab);
 int					error_arg(t_data *data, int val, char ***tab);
-int					file_option(t_data *data, char *tab, int *file);
-void				pars_val_file(t_data *data, char tab, int *file);
+int					file_option(t_data *data, char *tab, int ret);
 int					error_val(t_data *data, int val, char ***tab);
 int					call_help(t_data *data);
 int					print_help(t_data *data);
