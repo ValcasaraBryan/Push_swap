@@ -12,9 +12,19 @@
 
 #include "push_swap.h"
 
-int		error_arg(t_data *data, int val)
+int		error_val(t_data *data, int val, char ***tab)
 {
 	(void)data;
+	free_tab_str(tab);
+	ft_fprintf(MSG_ERR, S_ERR);
+	erase_data(data);
+	return (val);
+}
+
+int		error_arg(t_data *data, int val, char ***tab)
+{
+	(void)data;
+	free_tab_str(tab);
 	ft_fprintf(MSG_I, S_ERR);
 	ft_fprintf(MSG_U, S_ERR, OPTION_);
 	erase_data(data);
@@ -51,7 +61,11 @@ void	print_arg(char *str, int val)
 	if (!(tab = ft_strsplit(str, ' ')))
 		return ;
 	i = -1;
-	len = ft_len_tab_str(tab);
+	len = 0;
+	while (tab[++i])
+		if (ft_str_is_int(tab[i]))
+			len++;
+	i = -1;
 	while (tab[++i])
 		if (ft_str_is_int(tab[i]))
 		{
@@ -120,7 +134,7 @@ int		open_file(t_data *data)
 		ft_fprintf("Too many arguments\n", S_ERR);
 	else
 		ft_fprintf("Missing file name\n", S_ERR);
-	return (error_arg(data, FALSE));
+	return (FALSE);
 }
 
 int		verbose(t_data *data)
@@ -151,10 +165,46 @@ int		call_help(t_data *data)
 	return (TRUE);
 }
 
-int		pars_option(t_data *data, int index)
+void	pars_val_file(t_data *data, char tab, int *file)
+{
+	(*file) = (data->option[FILE]
+		&& !*file && params(tab, &OPTION_[FILE]) == 0) ? 1 : 0;
+}
+
+int		pars_option(t_data *data, char *tab)
+{
+	int	j;
+
+	j = 0;
+	if (tab[j] == '-')
+		while (tab[++j])
+		{
+			if (params(tab[j], OPTION_) == 0)
+				return (ERROR);
+			else
+				data->option[ft_strnchr(OPTION_, tab[j], LEN_OPTION)] = 1;
+		}
+	return (TRUE);
+}
+
+int		file_option(t_data *data, char *tab, int *file)
+{
+	int	j;
+
+	j = 0;
+	if (tab[j] != '-' && !*file)
+	{
+		if (!(ft_str_is_int(tab)))
+			return (ERROR);
+	}
+	else
+		pars_val_file(data, tab[j], file);
+	return (TRUE);
+}
+
+int		pars(t_data *data, int index, int *file)
 {
 	int		i;
-	int		j;
 	char	**tab;
 
 	if (!data->av)
@@ -163,17 +213,12 @@ int		pars_option(t_data *data, int index)
 		return (ERROR);
 	i = -1;
 	while (tab[++i])
-		if (tab[i][j = 0] == '-')
-			while (tab[i][++j])
-			{
-				if (params(tab[i][j], OPTION_) == 0)
-				{
-					free_tab_str(&tab);
-					return (ERROR);
-				}
-				else
-					data->option[ft_strnchr(OPTION_, tab[i][j], LEN_OPTION)] = 1;
-			}
+	{
+		if (pars_option(data, tab[i]) == ERROR)
+			return (error_arg(data, ERROR, &tab));
+		if (file_option(data, tab[i], file) == ERROR)
+			return (error_val(data, ERROR, &tab));
+	}
 	free_tab_str(&tab);
 	return (TRUE);
 }
@@ -205,38 +250,42 @@ void		init_data(t_data *data, int ac, char **av)
 		data->option[i] = 0;
 }
 
-int			check_option(t_data *data)
+int			check_val(t_data *data)
 {
+	int		flag;
 	int		i;
-	
+
 	i = 0;
-	while (i < data->len)
-	{
-		if (pars_option(data, i) == ERROR)
-			return (error_arg(data, ERROR));
-		i++;
-	}
+	flag = 0;
+	while (++i < data->len)
+		if (pars(data, i, &flag) == ERROR)
+			return (ERROR);
 	return (TRUE);
 }
 
 int			checker(int ac, char **av)
 {
 	t_data	data;
+	int		ret;
 
 	init_data(&data, ac, av);
 	if (data.len <= 1)
 		return (FALSE);
-	if (check_option(&data) == ERROR)
+	if ((ret = check_val(&data)) == ERROR)
 		return (ERROR);
 	if (!(call_help(&data)))
 		return (MSG);
+	else if (ret == FALSE)
+	{
+		ft_printf("open\n");
+	}
 	// int i = -1;
 	// while (++i < LEN_OPTION)
 		// ft_printf("\t%d\n", data.option[i]);
-	while (data.index < ac)
-	{
-		ft_fprintf("%s\n", S_STD, data.av[data.index++]);
-	}
+	// while (data.index < ac)
+	// {
+		// ft_fprintf("%s\n", S_STD, data.av[data.index++]);
+	// }
 	// if (!(data.tab = intsplit(data.av[data.index], ' ')))
 		// return (FALSE);
 	// data.len = ac - 2;

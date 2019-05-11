@@ -30,7 +30,7 @@
 # define VERBOSE	0
 # define HELP		1
 # define FILE		2
-# define PATTERN		3
+# define PATTERN	3
 # define MSG_HELP	"help :\n\n"
 # define MSG_V		"-v\t\tverbose\n"
 # define MSG_P		"-p\t\tpattern exemple\n"
@@ -39,6 +39,7 @@
 # define MSG_U		"usage : ./checker [-%s] [pattern] [file]\n"
 # define MSG_PA		"./checker -f [name_file]\n"
 # define MSG_I		"checker: illegal option\n"
+# define MSG_ERR	"Error\n"
 # define MESSAGE_H	MSG_HELP MSG_V MSG_P MSG_F MSG_H MSG_U
 
 typedef struct		s_val
@@ -59,18 +60,45 @@ typedef struct		s_data
 	int				fd;
 }					t_data;
 
-int					push_swap(char *str);
-
-int					pars_option(t_data *data, int index);
+/*
+**					in main
+**						in checker
+*/
 int					checker(int ac, char **av);
-int					open_file(t_data *data);
-
-void				erase_data(t_data *data);
-int					error_arg(t_data *data, int val);
+/*
+**					in checker
+**						in init_data
+**						in check_val
+**							in pars
+**								in pars_option
+**									in error_arg
+**								in file_option
+**									in pars_val_file
+**									in error_val
+**						in call_help
+**							in print_help
+**								in erase_data
+**							in print_pattern
+**								in print_pattern_one
+**								in print_pattern_three
+**								in erase_data
+*/
+void				init_data(t_data *data, int ac, char **av);
+int					check_val(t_data *data);
+int					pars(t_data *data, int index, int *file);
+int					pars_option(t_data *data, char *tab);
+int					error_arg(t_data *data, int val, char ***tab);
+int					file_option(t_data *data, char *tab, int *file);
+void				pars_val_file(t_data *data, char tab, int *file);
+int					error_val(t_data *data, int val, char ***tab);
+int					call_help(t_data *data);
 int					print_help(t_data *data);
+void				erase_data(t_data *data);
 int					print_patern(t_data *data);
 void				print_patern_one(t_data *data);
 void				print_patern_three(t_data *data);
+
+int					open_file(t_data *data);
 
 t_val				*intsplit(const char *s, char c);
 
