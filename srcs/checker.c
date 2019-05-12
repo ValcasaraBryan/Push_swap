@@ -210,7 +210,7 @@ int		pars(t_data *data, int *index)
 			return (error_arg(data, ERROR, &tab));
 		if (params(OPTION_[FILE], tab[i]) || params(OPTION_[EDIT], tab[i]))
 			file_option(data, tab, index, &i);
-		else if (ret == FALSE && !ft_number_ok(tab[i]))
+		else if (ret == FALSE)
 			return (error_val(data, ERROR, &tab));
 	}
 	free_tab_str(&tab);
