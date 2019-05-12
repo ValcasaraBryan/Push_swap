@@ -24,25 +24,29 @@
 # define E_STD		1
 # define TRUE		1
 # define FALSE		0
-# define LEN_OPTION	4
+# define LEN_OPTION	5
 # define LEN_PRINT	2
-# define OPTION_	"vhfp"
+# define OPTION_	"vhfpe"
 # define VERBOSE	0
 # define HELP		1
 # define FILE		2
 # define PATTERN	3
+# define EDIT		4
 # define MSG_HELP	"help :\n\n"
 # define MSG_V		"-v\t\tverbose\n"
 # define MSG_P		"-p\t\tpattern exemple\n"
-# define MSG_F		"-f\t\tfile [file_name]\n"
+# define MSG_F		"-f\t\tfile [file_name] (for input)\n"
 # define MSG_H		"-h\t\tThis message\n"
-# define MSG_U		"usage : ./checker [-%s] [pattern] [file]\n"
+# define MSG_E		"-e\t\tedit [file_name] (for output)\n"
+# define MSG_U		"usage : ./checker [-%s] [pattern] [file] [edit]\n"
 # define MSG_PA		"./checker -f [file_name]\n"
 # define MSG_I		"checker: illegal option\n"
 # define MSG_ERR	"Error\n"
 # define F_DOES		"Files doesn't existe\n"
 # define F_NMIS		"Files name missing\n"
-# define MESSAGE_H	MSG_HELP MSG_V MSG_P MSG_F MSG_H MSG_U
+# define E_NMIS		"Edit name missing\n"
+# define E_FERR		"Edit file error\n"
+# define MESSAGE_H	MSG_HELP MSG_V MSG_P MSG_F MSG_E MSG_H MSG_U
 
 typedef struct		s_val
 {
@@ -56,9 +60,9 @@ typedef struct		s_data
 	char			**av;
 	int				len;
 	t_val			*tab;
-	char			*arg;
 	int				option[LEN_OPTION];
 	int				fd;
+	int				output;
 	int				file;
 }					t_data;
 
@@ -86,10 +90,10 @@ int					checker(int ac, char **av);
 */
 void				init_data(t_data *data, int ac, char **av);
 int					check_val(t_data *data);
-int					pars(t_data *data, int index);
+int					pars(t_data *data, int *index);
 int					pars_option(t_data *data, char *tab);
 int					error_arg(t_data *data, int val, char ***tab);
-int					file_option(t_data *data, char *tab, int option);
+int					file_option(t_data *data, char **tab, int *i, int *j);
 int					error_val(t_data *data, int val, char ***tab);
 int					call_help(t_data *data);
 int					print_help(t_data *data);

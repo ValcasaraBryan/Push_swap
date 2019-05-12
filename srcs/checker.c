@@ -40,7 +40,6 @@ int		error_val(t_data *data, int val, char ***tab)
 	(void)data;
 	free_tab_str(tab);
 	ft_fprintf(MSG_ERR, S_ERR);
-	erase_data(data);
 	// while (1);
 	return (val);
 }
@@ -51,15 +50,14 @@ int		error_arg(t_data *data, int val, char ***tab)
 	free_tab_str(tab);
 	ft_fprintf(MSG_I, S_ERR);
 	ft_fprintf(MSG_U, S_ERR, OPTION_);
-	erase_data(data);
 	// while (1);
 	return (val);
 }
 
 int		print_help(t_data *data)
 {
+	(void)data;
 	ft_fprintf(MESSAGE_H, S_ERR, OPTION_);
-	erase_data(data);
 	// while (1);
 	return (FALSE);
 }
@@ -74,7 +72,6 @@ int		print_pattern(t_data *data)
 	print_patern_one(data);
 	ft_fprintf("\"\n", S_ERR);
 	print_patern_three(data);
-	erase_data(data);
 	// while (1);
 	return (FALSE);
 }
@@ -153,12 +150,6 @@ int		verbose(t_data *data)
 	return (TRUE);
 }
 
-void	erase_data(t_data *data)
-{
-	free(data->arg);
-	data->arg = NULL;
-}
-
 void	print_patern_three(t_data *data)
 {
 	(void)data;
@@ -193,20 +184,16 @@ int		pars_option(t_data *data, char *tab)
 	return (FALSE);
 }
 
-int		file_option(t_data *data, char *tab, int option)
+int		file_option(t_data *data, char **tab, int *i, int *j)
 {
-	if (option == TRUE && params(OPTION_[FILE], tab)
-		&& data->option[FILE] && !data->file)
-		data->file = 1;
-	else if (option == FALSE && data->file)
-		data->file = 0;
-	else if (option == FALSE && !data->file)
-		if (!(ft_number_ok(tab)))
-			return (ERROR);
+	if (*j + 1 < ft_len_tab_str(tab))
+		(*j)++;
+	else if (*i + 1 < data->len)
+		(*i)++;
 	return (TRUE);
 }
 
-int		pars(t_data *data, int index)
+int		pars(t_data *data, int *index)
 {
 	int		i;
 	int		ret;
@@ -214,14 +201,16 @@ int		pars(t_data *data, int index)
 
 	if (!data->av)
 		return (ERROR);
-	if (!(tab = ft_strsplit(data->av[index], ' ')))
+	if (!(tab = ft_strsplit(data->av[*index], ' ')))
 		return (ERROR);
 	i = -1;
 	while (tab[++i])
 	{
 		if ((ret = pars_option(data, tab[i])) == ERROR)
 			return (error_arg(data, ERROR, &tab));
-		if (file_option(data, tab[i], ret) == ERROR)
+		if (params(OPTION_[FILE], tab[i]) || params(OPTION_[EDIT], tab[i]))
+			file_option(data, tab, index, &i);
+		else if (ret == FALSE && !ft_number_ok(tab[i]))
 			return (error_val(data, ERROR, &tab));
 	}
 	free_tab_str(&tab);
@@ -246,12 +235,12 @@ void		print_list(t_data *data, t_val *head)
 void		init_data(t_data *data, int ac, char **av)
 {
 	int		i;
-	data->tab = NULL;
-	data->len = ac;
 	data->av = av;
+	data->len = ac;
+	data->tab = NULL;
 	data->fd = -1;
+	data->output = -1;
 	data->file = 0;
-	data->arg = NULL;
 	i = -1;
 	while (++i < LEN_OPTION)
 		data->option[i] = 0;
@@ -263,7 +252,7 @@ int			check_val(t_data *data)
 
 	i = 0;
 	while (++i < data->len)
-		if (pars(data, i) == ERROR)
+		if (pars(data, &i) == ERROR)
 			return (ERROR);
 	return (TRUE);
 }
@@ -328,6 +317,7 @@ int			open_file(t_data *data, char **split, int *i, int *j)
 {
 	char	*buf;
 
+	buf = NULL;
 	if (*j + 1 < ft_len_tab_str(split))
 		buf = split[(*j)++ + 1];
 	else if (*i + 1 < data->len)
@@ -352,6 +342,27 @@ int			open_file(t_data *data, char **split, int *i, int *j)
 	return (TRUE);
 }
 
+int			open_edit(t_data *data, char **split, int *i, int *j)
+{
+	char	*buf;
+
+	if (*j + 1 < ft_len_tab_str(split))
+		buf = split[(*j)++ + 1];
+	else if (*i + 1 < data->len)
+		buf = data->av[(*i)++ + 1];
+	else
+	{
+		ft_fprintf(E_NMIS, S_ERR);
+		return (ERROR);
+	}
+	if ((data->output = open(buf, O_RDWR | O_CREAT, S_IRWXU)) == -1)
+	{
+		ft_fprintf(E_FERR, S_ERR);
+		return (ERROR);
+	}
+	return (TRUE);
+}
+
 int			take_arguments(t_data *data)
 {
 	int		i;
@@ -369,12 +380,22 @@ int			take_arguments(t_data *data)
 		{
 			if (ft_number_ok(split[j]))
 				data->tab = intsplit(data->tab, split[j], ' ');
-			else
+			else if (params(OPTION_[FILE], split[j]))
+			{
 				if (open_file(data, split, &i, &j) == ERROR)
 				{
 					free_tab_str(&split);
 					return (ERROR);
 				}
+			}
+			else if (params(OPTION_[EDIT], split[j]))
+			{
+				if (open_edit(data, split, &i, &j) == ERROR)
+				{
+					free_tab_str(&split);
+					return (ERROR);
+				}
+			}
 		}
 		free_tab_str(&split);
 	}

@@ -59,3 +59,15 @@ make
 ./checker "-f" 8 coucou 3
 ./checker "-f salut" 8 coucou 3
 ./checker "-f salut 5" 8 coucou 3
+#		edit
+./checker -e
+./checker -e 547
+./checker -e 547 8
+./checker -e "547"
+./checker -e "547" "8"
+./checker "-e 547" "8"
+./checker "-e 547" 8
+./checker "-e" 8 coucou
+./checker "-e" 8 coucou 3
+./checker "-e salut" 8 coucou 3
+./checker "-e salut 5" 8 coucou 3
