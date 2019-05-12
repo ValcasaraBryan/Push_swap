@@ -99,5 +99,6 @@ void				print_patern_one(t_data *data);
 void				print_patern_three(t_data *data);
 
 t_val				*intsplit(t_val *split, const char *s, char c);
+void				erase_list(t_val **old);
 
 #endif

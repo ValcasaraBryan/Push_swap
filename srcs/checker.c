@@ -344,6 +344,7 @@ int			open_file(t_data *data, char **split, int *i, int *j)
 	}
 	if (take_file(data) == ERROR)
 	{
+		erase_list(&data->tab);
 		close(data->fd);
 		return (ERROR);
 	}
