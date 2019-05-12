@@ -76,15 +76,13 @@ static int		add_lst(t_val **old, char **s)
 	return (1);
 }
 
-t_val			*intsplit(const char *s, char c)
+t_val			*intsplit(t_val *split, const char *s, char c)
 {
 	size_t		i;
 	size_t		j;
-	t_val		*split;
 	char		*tmp;
 
 	i = 0;
-	split = NULL;
 	tmp = NULL;
 	while (s[i])
 	{

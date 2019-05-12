@@ -37,9 +37,11 @@
 # define MSG_F		"-f\t\tfile [file_name]\n"
 # define MSG_H		"-h\t\tThis message\n"
 # define MSG_U		"usage : ./checker [-%s] [pattern] [file]\n"
-# define MSG_PA		"./checker -f [name_file]\n"
+# define MSG_PA		"./checker -f [file_name]\n"
 # define MSG_I		"checker: illegal option\n"
 # define MSG_ERR	"Error\n"
+# define F_DOES		"Files doesn't existe\n"
+# define F_NMIS		"Files name missing\n"
 # define MESSAGE_H	MSG_HELP MSG_V MSG_P MSG_F MSG_H MSG_U
 
 typedef struct		s_val
@@ -56,7 +58,6 @@ typedef struct		s_data
 	t_val			*tab;
 	char			*arg;
 	int				option[LEN_OPTION];
-	int				index;
 	int				fd;
 	int				file;
 }					t_data;
@@ -88,7 +89,7 @@ int					check_val(t_data *data);
 int					pars(t_data *data, int index);
 int					pars_option(t_data *data, char *tab);
 int					error_arg(t_data *data, int val, char ***tab);
-int					file_option(t_data *data, char *tab, int ret);
+int					file_option(t_data *data, char *tab, int option);
 int					error_val(t_data *data, int val, char ***tab);
 int					call_help(t_data *data);
 int					print_help(t_data *data);
@@ -97,8 +98,6 @@ int					print_patern(t_data *data);
 void				print_patern_one(t_data *data);
 void				print_patern_three(t_data *data);
 
-int					open_file(t_data *data);
-
-t_val				*intsplit(const char *s, char c);
+t_val				*intsplit(t_val *split, const char *s, char c);
 
 #endif

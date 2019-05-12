@@ -36,19 +36,15 @@ int			ft_str_is_int(char *str)
 
 	if (!str)
 		return (0);
-	i = 0;
+	i = -1;
 	neg = 0;
 	val = 0;
 	if (str[0] == '-' || str[0] == '+')
 		neg++;
-	if ((len = ft_strlen(str + i + neg)) > 10)
+	if ((len = ft_strlen(str + neg)) > 10)
 		return (0);
-	while (str[i + neg])
-	{
+	while (++i + neg < len)
 		val += (str[len - (i - neg) - 1] - 48) * pow(i);
-		if (!(ft_isdigit(str[neg + i++])))
-			return (0);
-	}
 	val = (neg) ? val * -1 : val;
 	return ((val >= INT_MIN && val <= INT_MAX) ? 1 : 0);
 }
