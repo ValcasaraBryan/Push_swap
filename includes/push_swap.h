@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/10 19:39:22 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/13 22:17:01 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+# define FLAG_O		data->option
+# define FLAG_S		data->flag
+# define FLAG_F		data->flag_file
+# define FLAG_E		data->flag_edit
+# define FLAG_V		data->flag_verbose
+# define SPLIT		data->split
+# define I			index_split
+
 # define MSG		-2
 # define ERROR		-1
 # define S_ERR		2
@@ -24,14 +32,14 @@
 # define E_STD		1
 # define TRUE		1
 # define FALSE		0
-# define LEN_OPTION	5
+# define LEN_OPTION	4
 # define LEN_PRINT	2
-# define OPTION_	"vhfpe"
+# define OPTION_	"vhpe"
+# define FILE_OP	'f'
 # define VERBOSE	0
 # define HELP		1
-# define FILE		2
-# define PATTERN	3
-# define EDIT		4
+# define PATTERN	2
+# define EDIT		3
 # define MSG_HELP	"help :\n\n"
 # define MSG_V		"-v\t\tverbose\n"
 # define MSG_P		"-p\t\tpattern exemple\n"
@@ -42,8 +50,8 @@
 # define MSG_PA		"./checker -f [file_name]\n"
 # define MSG_I		"checker: illegal option\n"
 # define MSG_ERR	"Error\n"
-# define F_DOES		"Files doesn't existe\n"
-# define F_NMIS		"Files name missing\n"
+# define F_DOES		"File doesn't existe\n"
+# define F_NMIS		"File name missing\n"
 # define E_NMIS		"Edit name missing\n"
 # define E_FERR		"Edit file error\n"
 # define MESSAGE_H	MSG_HELP MSG_V MSG_P MSG_F MSG_E MSG_H MSG_U
@@ -58,12 +66,19 @@ typedef struct		s_val
 typedef struct		s_data
 {
 	char			**av;
+	char			**split;
+	int				flag;
+	int				flag_file;
+	int				flag_edit;
+	int				flag_verbose;
+	int				index;
+	int				index_split;
 	int				len;
+	int				len_split;
 	t_val			*tab;
 	int				option[LEN_OPTION];
 	int				fd;
 	int				output;
-	int				file;
 }					t_data;
 
 /*
@@ -89,12 +104,11 @@ int					checker(int ac, char **av);
 **								in erase_data
 */
 void				init_data(t_data *data, int ac, char **av);
-int					check_val(t_data *data);
-int					pars(t_data *data, int *index);
+int					pars(t_data *data);
 int					pars_option(t_data *data, char *tab);
-int					error_arg(t_data *data, int val, char ***tab);
+int					error_arg(t_data *data, int val);
 int					file_option(t_data *data, char **tab, int *i, int *j);
-int					error_val(t_data *data, int val, char ***tab);
+int					error_val(t_data *data, int val);
 int					call_help(t_data *data);
 int					print_help(t_data *data);
 void				erase_data(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 21:43:11 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/10 16:37:12 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/13 15:59:33 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void			erase_list(t_val **old)
 {
 	t_val		*tmp;
 
+	if (!*old)
+		return ;
 	if ((*old)->prev)
 		(*old)->prev->next = NULL;
 	while (*old)
