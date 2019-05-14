@@ -18,10 +18,8 @@
 # include "get_next_line.h"
 
 # define FLAG_O		data->option
-# define FLAG_S		data->flag
-# define FLAG_F		data->flag_file
-# define FLAG_E		data->flag_edit
-# define FLAG_V		data->flag_verbose
+# define FILE		data->no_file
+# define OPT		data->no_option
 # define SPLIT		data->split
 # define I			index_split
 
@@ -67,10 +65,8 @@ typedef struct		s_data
 {
 	char			**av;
 	char			**split;
-	int				flag;
-	int				flag_file;
-	int				flag_edit;
-	int				flag_verbose;
+	int				no_option;
+	int				no_file;
 	int				index;
 	int				index_split;
 	int				len;
@@ -103,16 +99,21 @@ int					checker(int ac, char **av);
 **								in print_pattern_three
 **								in erase_data
 */
+int					open_file(t_data *data);
+int					open_edit(t_data *data);
 void				init_data(t_data *data, int ac, char **av);
 int					pars(t_data *data);
 int					pars_option(t_data *data, char *tab);
-int					error_arg(t_data *data, int val);
+int					error_arg(t_data *data);
 int					file_option(t_data *data, char **tab, int *i, int *j);
-int					error_val(t_data *data, int val);
+int					error_edit(t_data *data);
+int					error_val(t_data *data);
 int					call_help(t_data *data);
 int					print_help(t_data *data);
 void				erase_data(t_data *data);
-int					print_patern(t_data *data);
+int					print_help(t_data *data);
+int					print_pattern(t_data *data);
+int					print_msg(t_data *data, int val);
 void				print_patern_one(t_data *data);
 void				print_patern_three(t_data *data);
 
