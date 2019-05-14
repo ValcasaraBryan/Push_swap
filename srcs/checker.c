@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/13 22:17:36 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:26:15 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,6 @@ int		error_arg(t_data *data)
 
 int		print_msg(t_data *data, int val)
 {
-	ft_printf("\t\t\t\t\t\t%d\n", val);
-	ft_printf("\t\t\t\t\t\t%d\n", FLAG_O[HELP]);
-	ft_printf("\t\t\t\t\t\t%d\n", FLAG_O[PATTERN]);
 	if (val == FLAG_O[HELP])
 		return (print_help(data));
 	else if (val == FLAG_O[PATTERN])
@@ -178,8 +175,22 @@ int		call_help(t_data *data)
 	return (TRUE);
 }
 
+int		ft_is_option(char *str, char *option)
+{
+	int	i;
+
+	i = 0;
+	if (ft_number_ok(str))
+		return (FALSE);
+	while (str[++i])
+		if (params(str[i], option) == FALSE)
+			return (FALSE);
+	return (TRUE);
+}
+
 int		pars(t_data *data)
 {
+	int	i;
 	int	a;
 
 	data->I = -1;
@@ -187,32 +198,37 @@ int		pars(t_data *data)
 	{
 		if (OPT == TRUE)// only option au debut des args
 		{
-			// boucle pour check_tout les lettres d'option
-				if (!ft_number_ok(SPLIT[data->I]) && params(SPLIT[data->I][1], OPTION_) && FLAG_O[EDIT] == FALSE)
+			if (ft_is_option(SPLIT[data->I], OPTION_) && FLAG_O[EDIT] == FALSE)
+			{
+				i = 0;
+				while (SPLIT[data->I][++i])
 				{
-					a = ft_strnchr(OPTION_, SPLIT[data->I][1], LEN_OPTION);
+					a = ft_strnchr(OPTION_, SPLIT[data->I][i], LEN_OPTION);
 					if (FLAG_O[a] == FALSE)
 						FLAG_O[a] = TRUE;
 					else if (FLAG_O[a] == TRUE)
 						return (error_arg(data));
-					printf("%-10s - V[%3d] - H[%3d] - P[%3d] - E[%3d]\n", SPLIT[data->I], FLAG_O[0], FLAG_O[1], FLAG_O[2], FLAG_O[3]);
 					if (FLAG_O[HELP] || FLAG_O[PATTERN])
 						return (print_msg(data, (FLAG_O[HELP]) ? FLAG_O[HELP] : FLAG_O[PATTERN]));
+					printf("%-10s - V[%3d] - H[%3d] - P[%3d] - E[%3d]\n", SPLIT[data->I], FLAG_O[0], FLAG_O[1], FLAG_O[2], FLAG_O[3]);
 				}
-				else if (FLAG_O[EDIT] == TRUE)
-				{
-					FLAG_O[EDIT] = FALSE;
-					printf("%-10s - EDIT_ARG\n", SPLIT[data->I]);
-					if (open_edit(data) == ERROR)
-						return (ERROR);
-				}
-				else
-					OPT = FALSE;
-			// fin de la boucle
+			}
+			else if (FLAG_O[EDIT] == TRUE)
+			{
+				FLAG_O[EDIT] = FALSE;
+				printf("%-10s - EDIT_ARG\n", SPLIT[data->I]);
+				if (open_edit(data) == ERROR)
+					return (ERROR);
+			}
+			else
+			{
+				printf("%-10s - V[%3d] - H[%3d] - P[%3d] - E[%3d] AUTRE\n", SPLIT[data->I], FLAG_O[0], FLAG_O[1], FLAG_O[2], FLAG_O[3]);
+				OPT = FALSE;
+			}
 		}
 		if (OPT == FALSE)// only arguments apres args
 		{
-			if (!ft_number_ok(SPLIT[data->I]) && params(FILE_OP, SPLIT[data->I]) && FILE == FALSE)
+			if (!ft_is_option(SPLIT[data->I], OPTION_) && ft_is_option(SPLIT[data->I], FILE_OP) && FILE == FALSE)
 			{
 				ft_printf("%s | \"-f\" | no option\n", SPLIT[data->I]);
 				FILE = TRUE;
@@ -233,8 +249,6 @@ int		pars(t_data *data)
 			}
 		}
 	}
-	if (FLAG_O[EDIT] == TRUE)
-		return (error_edit(data));
 	return (TRUE);
 }
 
@@ -381,6 +395,8 @@ int			checker(int ac, char **av)
 		free_tab_str(&data.split);
 		data.index++;
 	}
+	if (data.option[EDIT] == TRUE)
+		return (error_edit(&data));
 	print_list(&data, data.tab);
 	erase_list(&data.tab);
 	return (TRUE);

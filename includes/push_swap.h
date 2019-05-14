@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/13 22:17:01 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:09:38 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define LEN_OPTION	4
 # define LEN_PRINT	2
 # define OPTION_	"vhpe"
-# define FILE_OP	'f'
+# define FILE_OP	"f"
 # define VERBOSE	0
 # define HELP		1
 # define PATTERN	2
@@ -45,7 +45,7 @@
 # define MSG_H		"-h\t\tThis message\n"
 # define MSG_E		"-e\t\tedit [file_name] (for output)\n"
 # define MSG_U		"usage : ./checker [-%s] [pattern] [file] [edit]\n"
-# define MSG_PA		"./checker -f [file_name]\n"
+# define MSG_PA		"./checxker -f [file_name]\n"
 # define MSG_I		"checker: illegal option\n"
 # define MSG_ERR	"Error\n"
 # define F_DOES		"File doesn't existe\n"
