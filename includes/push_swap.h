@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 14:09:38 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/14 15:40:47 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@
 # define MSG_P		"-p\t\tpattern exemple\n"
 # define MSG_F		"-f\t\tfile [file_name] (for input)\n"
 # define MSG_H		"-h\t\tThis message\n"
-# define MSG_E		"-e\t\tedit [file_name] (for output)\n"
-# define MSG_U		"usage : ./checker [-%s] [pattern] [file] [edit]\n"
-# define MSG_PA		"./checxker -f [file_name]\n"
+# define MSG_E		"-e\t\tedit [edit_name] (for output)\n"
+# define MSG_U		"usage : ./checker [-%s] [edit] [pattern] [file]\n"
+# define MSG_PA		"-f [file_name]\n"
 # define MSG_I		"checker: illegal option\n"
 # define MSG_ERR	"Error\n"
 # define F_DOES		"File doesn't existe\n"

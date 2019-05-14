@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 14:26:15 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/14 15:57:00 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,22 @@ int			ft_number_ok(char *str)
 		return (0);
 }
 
-int		error_val(t_data *data)
+int			error_val(t_data *data)
 {
 	free_tab_str(&SPLIT);
 	ft_fprintf(MSG_ERR, S_ERR);
-	// while (1);
 	return (ERROR);
 }
 
-int		error_arg(t_data *data)
+int			error_arg(t_data *data)
 {
 	free_tab_str(&SPLIT);
 	ft_fprintf(MSG_I, S_ERR);
 	ft_fprintf(MSG_U, S_ERR, OPTION_);
-	// while (1);
 	return (ERROR);
 }
 
-int		print_msg(t_data *data, int val)
+int			print_msg(t_data *data, int val)
 {
 	if (val == FLAG_O[HELP])
 		return (print_help(data));
@@ -62,31 +60,26 @@ int		print_msg(t_data *data, int val)
 		return (FALSE);
 }
 
-int		print_help(t_data *data)
+int			print_help(t_data *data)
 {
 	ft_fprintf(MESSAGE_H, S_ERR, OPTION_);
-	// free_all;
 	free_tab_str(&data->split);
-	// while (1);
 	return (ERROR);
 }
 
-int		print_pattern(t_data *data)
+int			print_pattern(t_data *data)
 {
-	ft_fprintf("./checker ", S_ERR);
+	ft_fprintf("./checker -e [edit_name] ", S_ERR);
 	print_patern_one(data);
-	ft_fprintf("\n", S_ERR);
-	ft_fprintf("./checker \"", S_ERR);
+	ft_fprintf(" \"", S_ERR);
 	print_patern_one(data);
-	ft_fprintf("\"\n", S_ERR);
+	ft_fprintf("\" ", S_ERR);
 	print_patern_three(data);
-	// free_all;
 	free_tab_str(&data->split);
-	// while (1);
 	return (ERROR);
 }
 
-void	print_arg(char *str, int val)
+void		print_arg(char *str, int val)
 {
 	char	**tab;
 	int		len;
@@ -110,7 +103,7 @@ void	print_arg(char *str, int val)
 	free_tab_str(&tab);
 }
 
-int		check_other_arg(t_data *data, int i)
+int			check_other_arg(t_data *data, int i)
 {
 	while (data->av[i])
 		if (ft_number_ok(data->av[i++]))
@@ -118,7 +111,7 @@ int		check_other_arg(t_data *data, int i)
 	return (0);
 }
 
-int		check_arg(t_data *data)
+int			check_arg(t_data *data)
 {
 	char	**tab;
 	int		i;
@@ -140,9 +133,9 @@ int		check_arg(t_data *data)
 	return ((arg < 2) ? 0 : 1);
 }
 
-void	print_patern_one(t_data *data)
+void		print_patern_one(t_data *data)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	if (i < data->len && check_arg(data))
@@ -152,21 +145,19 @@ void	print_patern_one(t_data *data)
 		ft_fprintf("1 2 3 4", S_ERR);
 }
 
-int		verbose(t_data *data)
+int			verbose(t_data *data)
 {
 	(void)data;
-	// data->index++;// v
-	// FLAG_O++;
 	return (TRUE);
 }
 
-void	print_patern_three(t_data *data)
+void		print_patern_three(t_data *data)
 {
 	(void)data;
 	ft_fprintf(MSG_PA, S_ERR);
 }
 
-int		call_help(t_data *data)
+int			call_help(t_data *data)
 {
 	if (FLAG_O[HELP])
 		return (print_help(data));
@@ -175,9 +166,9 @@ int		call_help(t_data *data)
 	return (TRUE);
 }
 
-int		ft_is_option(char *str, char *option)
+int			ft_is_option(char *str, char *option)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	if (ft_number_ok(str))
@@ -185,69 +176,92 @@ int		ft_is_option(char *str, char *option)
 	while (str[++i])
 		if (params(str[i], option) == FALSE)
 			return (FALSE);
+	return (i > 1 ? TRUE : FALSE);
+}
+
+int			active_option(t_data *data, int i, int a)
+{
+	while (SPLIT[data->I][++i])
+	{
+		a = ft_strnchr(OPTION_, SPLIT[data->I][i], LEN_OPTION);
+		if (FLAG_O[a] == FALSE)
+			FLAG_O[a] = TRUE;
+		else if (FLAG_O[a] == TRUE)
+			return (error_arg(data));
+		if (FLAG_O[HELP])
+			return (print_msg(data, FLAG_O[HELP]));
+		if (FLAG_O[PATTERN])
+			return (print_msg(data, FLAG_O[PATTERN]));
+	}
 	return (TRUE);
 }
 
-int		pars(t_data *data)
+int			active_no_option(t_data *data, int i)
 {
-	int	i;
-	int	a;
+	int		flag;
 
+	flag = FALSE;
+	while (SPLIT[data->I][++i])
+	{
+		if (params(SPLIT[data->I][i], FILE_OP) == TRUE && flag == FALSE)
+			flag = TRUE;
+		else
+			return (error_arg(data));
+	}
+	return (TRUE);
+}
+
+int			check_option(t_data *data)
+{
+	if (ft_is_option(SPLIT[data->I], OPTION_) && FLAG_O[EDIT] == FALSE)
+	{
+		if (active_option(data, 0, 0) == ERROR)
+			return (ERROR);
+	}
+	else if (FLAG_O[EDIT] == TRUE)
+	{
+		FLAG_O[EDIT] = FALSE;
+		if (open_edit(data) == ERROR)
+			return (ERROR);
+	}
+	else
+		OPT = FALSE;
+	return (TRUE);
+}
+
+int			check_no_option(t_data *data)
+{
+	if (!ft_is_option(SPLIT[data->I], OPTION_)
+		&& ft_is_option(SPLIT[data->I], FILE_OP) && FILE == FALSE)
+	{
+		if (active_no_option(data, 0) == ERROR)
+			return (ERROR);
+		FILE = TRUE;
+	}
+	else if (FILE == TRUE)
+	{
+		if (open_file(data) == ERROR)
+			return (ERROR);
+		FILE = FALSE;
+	}
+	else if (ft_number_ok(SPLIT[data->I]))
+		data->tab = intsplit(data->tab, SPLIT[data->I], ' ');
+	else
+		return (error_arg(data));
+	return (TRUE);
+}
+
+int			pars(t_data *data)
+{
 	data->I = -1;
 	while (++data->I < data->len_split)
 	{
-		if (OPT == TRUE)// only option au debut des args
-		{
-			if (ft_is_option(SPLIT[data->I], OPTION_) && FLAG_O[EDIT] == FALSE)
-			{
-				i = 0;
-				while (SPLIT[data->I][++i])
-				{
-					a = ft_strnchr(OPTION_, SPLIT[data->I][i], LEN_OPTION);
-					if (FLAG_O[a] == FALSE)
-						FLAG_O[a] = TRUE;
-					else if (FLAG_O[a] == TRUE)
-						return (error_arg(data));
-					if (FLAG_O[HELP] || FLAG_O[PATTERN])
-						return (print_msg(data, (FLAG_O[HELP]) ? FLAG_O[HELP] : FLAG_O[PATTERN]));
-					printf("%-10s - V[%3d] - H[%3d] - P[%3d] - E[%3d]\n", SPLIT[data->I], FLAG_O[0], FLAG_O[1], FLAG_O[2], FLAG_O[3]);
-				}
-			}
-			else if (FLAG_O[EDIT] == TRUE)
-			{
-				FLAG_O[EDIT] = FALSE;
-				printf("%-10s - EDIT_ARG\n", SPLIT[data->I]);
-				if (open_edit(data) == ERROR)
-					return (ERROR);
-			}
-			else
-			{
-				printf("%-10s - V[%3d] - H[%3d] - P[%3d] - E[%3d] AUTRE\n", SPLIT[data->I], FLAG_O[0], FLAG_O[1], FLAG_O[2], FLAG_O[3]);
-				OPT = FALSE;
-			}
-		}
-		if (OPT == FALSE)// only arguments apres args
-		{
-			if (!ft_is_option(SPLIT[data->I], OPTION_) && ft_is_option(SPLIT[data->I], FILE_OP) && FILE == FALSE)
-			{
-				ft_printf("%s | \"-f\" | no option\n", SPLIT[data->I]);
-				FILE = TRUE;
-			}
-			else if (FILE == TRUE)
-			{
-				ft_printf("%s | file | no option\n", SPLIT[data->I]);
-				if (open_file(data) == ERROR)
-					return (ERROR);
-				FILE = FALSE;
-			}
-			else if (ft_number_ok(SPLIT[data->I]))
-				data->tab = intsplit(data->tab, SPLIT[data->I], ' ');
-			else
-			{
-				ft_printf("%s | ERREUR\n", SPLIT[data->I]);
-				return (error_arg(data));
-			}
-		}
+		if (OPT == TRUE)
+			if (check_option(data) == ERROR)
+				return (ERROR);
+		if (OPT == FALSE)
+			if (check_no_option(data) == ERROR)
+				return (ERROR);
 	}
 	return (TRUE);
 }
@@ -261,15 +275,18 @@ void		print_list(t_data *data, t_val *head)
 		head->prev->next = NULL;
 	while (head->next)
 	{
-		ft_fprintf("%14p <-- %14p --> %14p | %d\n", S_STD, head->prev, head, head->next, head->val);
+		ft_fprintf("%14p <-- %14p --> %14p | %d\n",
+			S_STD, head->prev, head, head->next, head->val);
 		head = head->next;
 	}
-	ft_fprintf("%14p <-- %14p                    | %d\n", S_STD, head->prev, head, head->val);
+	ft_fprintf("%14p <-- %14p                    | %d\n",
+		S_STD, head->prev, head, head->val);
 }
 
 void		init_data(t_data *data, int ac, char **av)
 {
 	int		i;
+
 	data->av = av;
 	data->split = NULL;
 	data->no_file = FALSE;
@@ -281,7 +298,6 @@ void		init_data(t_data *data, int ac, char **av)
 	data->tab = NULL;
 	data->fd = -1;
 	data->output = -1;
-
 	i = -1;
 	while (++i < LEN_OPTION)
 		FLAG_O[i] = FALSE;
@@ -360,6 +376,13 @@ int			open_file(t_data *data)
 	return (TRUE);
 }
 
+int			error_file(t_data *data)
+{
+	(void)data;
+	ft_fprintf(F_NMIS, S_ERR);
+	return (ERROR);
+}
+
 int			error_edit(t_data *data)
 {
 	(void)data;
@@ -389,7 +412,8 @@ int			checker(int ac, char **av)
 	{
 		if (!(data.split = ft_strsplit(data.av[data.index], ' ')))
 			return (ERROR);
-		data.len_split = ft_len_tab_str(data.split);
+		if (!(data.len_split = ft_len_tab_str(data.split)))
+			return (error_arg(&data));
 		if (pars(&data) == ERROR)
 			return (ERROR);
 		free_tab_str(&data.split);
@@ -397,14 +421,17 @@ int			checker(int ac, char **av)
 	}
 	if (data.option[EDIT] == TRUE)
 		return (error_edit(&data));
+	if (data.no_file == TRUE)
+		return (error_file(&data));
 	print_list(&data, data.tab);
 	erase_list(&data.tab);
 	return (TRUE);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	int	ret;
+	int		ret;
+
 	if ((ret = checker(argc, argv)) == ERROR)
 		return (FALSE);
 	else if (ret == FALSE)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brvalcas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/07 18:35:02 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/14 15:50:00 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int		main(int argc, char **argv)
 	else if (argc > 1)
 	{
 		i = 1;
-		// push_swap(argv[1]);
 		while (i < argc)
 			ft_printf("%s\n", argv[i++]);
 	}
