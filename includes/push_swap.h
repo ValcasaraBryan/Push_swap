@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 15:40:47 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/14 16:33:06 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,39 +83,53 @@ typedef struct		s_data
 */
 int					checker(int ac, char **av);
 /*
-**					in checker
-**						in init_data
-**						in check_val
-**							in pars
-**								in pars_option
-**									in error_arg
-**								in file_option
-**									in error_val
-**						in call_help
-**							in print_help
-**								in erase_data
-**							in print_pattern
-**								in print_pattern_one
-**								in print_pattern_three
-**								in erase_data
+**					parsing.c
 */
-int					open_file(t_data *data);
-int					open_edit(t_data *data);
-void				init_data(t_data *data, int ac, char **av);
 int					pars(t_data *data);
-int					pars_option(t_data *data, char *tab);
-int					error_arg(t_data *data);
-int					file_option(t_data *data, char **tab, int *i, int *j);
-int					error_edit(t_data *data);
-int					error_val(t_data *data);
-int					call_help(t_data *data);
-int					print_help(t_data *data);
-void				erase_data(t_data *data);
-int					print_help(t_data *data);
+int					check_option(t_data *data);
+int					check_no_option(t_data *data);
+int					active_option(t_data *data, int i, int a);
+int					active_no_option(t_data *data, int i);
+/*
+**					files.c
+*/
+int					open_edit(t_data *data);
+int					open_file(t_data *data);
+int					take_file(t_data *data);
+int					split_file(t_data *data, char *line);
+/*
+**					check_arg.c
+*/
+int					ft_number_ok(char *str);
+int					ft_str_is_number(char *str);
+int					ft_is_option(char *str, char *option);
+/*
+**					print_pattern.c
+*/
 int					print_pattern(t_data *data);
-int					print_msg(t_data *data, int val);
 void				print_patern_one(t_data *data);
+int					check_arg(t_data *data);
+int					check_other_arg(t_data *data, int i);
 void				print_patern_three(t_data *data);
+/*
+**					error.c
+*/
+int					error_val(t_data *data);
+int					error_arg(t_data *data);
+int					error_file(t_data *data);
+int					error_edit(t_data *data);
+/*
+**					print_messages.c
+*/
+int					print_msg(t_data *data, int val);
+int					print_help(t_data *data);
+void				print_arg(char *str, int val);
+/*
+**					utils.c
+*/
+void				init_data(t_data *data, int ac, char **av);
+void				print_list(t_data *data, t_val *head);
+int					verbose(t_data *data);
 
 t_val				*intsplit(t_val *split, const char *s, char c);
 void				erase_list(t_val **old);

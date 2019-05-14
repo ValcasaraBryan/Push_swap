@@ -6,9 +6,15 @@ arg =
 
 SRC = srcs/%.c
 
-OBJ_CHECKER =	objets/checker.o\
-				objets/ft_intsplit.o
-
+OBJ_CHECKER =	objets/check_arg.o\
+				objets/checker.o\
+				objets/error.o\
+				objets/files.o\
+				objets/ft_intsplit.o\
+				objets/parsing.o\
+				objets/print_messages.o\
+				objets/print_pattern.o\
+				objets/utils.o
 OBJ_PUSH = objets/push_swap.o
 
 OBJ = objets/%.o
