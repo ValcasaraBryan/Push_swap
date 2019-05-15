@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 16:31:26 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/15 21:45:22 by bryanvalcas      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void		init_data(t_data *data, int ac, char **av)
 	data->av = av;
 	data->split = NULL;
 	data->no_file = FALSE;
+	data->no_edit = FALSE;
 	data->no_option = TRUE;
 	data->index = TRUE;
 	data->index_split = -1;
@@ -27,6 +28,7 @@ void		init_data(t_data *data, int ac, char **av)
 	data->tab = NULL;
 	data->fd = -1;
 	data->output = -1;
+	data->edit = NULL;
 	i = -1;
 	while (++i < LEN_OPTION)
 		FLAG_O[i] = FALSE;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 16:33:06 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/15 21:56:53 by bryanvalcas      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define FLAG_O		data->option
 # define FILE		data->no_file
+# define EDIT_		data->no_edit
 # define OPT		data->no_option
 # define SPLIT		data->split
 # define I			index_split
@@ -46,7 +47,7 @@
 # define MSG_E		"-e\t\tedit [edit_name] (for output)\n"
 # define MSG_U		"usage : ./checker [-%s] [edit] [pattern] [file]\n"
 # define MSG_PA		"-f [file_name]\n"
-# define MSG_I		"checker: illegal option\n"
+# define MSG_I		"checker: illegal option -- %s\n"
 # define MSG_ERR	"Error\n"
 # define F_DOES		"File doesn't existe\n"
 # define F_NMIS		"File name missing\n"
@@ -67,6 +68,7 @@ typedef struct		s_data
 	char			**split;
 	int				no_option;
 	int				no_file;
+	int				no_edit;
 	int				index;
 	int				index_split;
 	int				len;
@@ -75,6 +77,7 @@ typedef struct		s_data
 	int				option[LEN_OPTION];
 	int				fd;
 	int				output;
+	char			*edit;
 }					t_data;
 
 /*

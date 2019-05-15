@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 16:34:39 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 00:35:26 by bryanvalcas      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int			checker(int ac, char **av)
 	t_data	data;
 
 	init_data(&data, ac, av);
-	if (data.len <= 1)
-		return (FALSE);
-	while (data.index < data.len)
+	if (data.len <= 1)// ARG NO
+		return (ERROR);
+	while (data.index < data.len) // ARG OUI
 	{
 		if (!(data.split = ft_strsplit(data.av[data.index], ' ')))
 			return (ERROR);
@@ -30,7 +30,11 @@ int			checker(int ac, char **av)
 		free_tab_str(&data.split);
 		data.index++;
 	}
-	if (data.option[EDIT] == TRUE)
+	if (data.option[HELP])
+		return (print_msg(&data, data.option[HELP]));
+	if (data.option[PATTERN])
+		return (print_msg(&data, data.option[PATTERN]));
+	if (data.no_edit == TRUE)
 		return (error_edit(&data));
 	if (data.no_file == TRUE)
 		return (error_file(&data));

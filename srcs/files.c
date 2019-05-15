@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:17:05 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/14 16:18:08 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 00:13:24 by bryanvalcas      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int			open_edit(t_data *data)
 {
-	if ((data->output = open(SPLIT[data->I], O_RDWR
+	if ((data->output = open(data->edit, O_RDWR
 		| O_CREAT, S_IRUSR + S_IWUSR + S_IRGRP + S_IROTH)) == -1)
 	{
 		ft_fprintf(E_FERR, S_ERR);
