@@ -6,7 +6,7 @@
 /*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:17:05 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 00:13:24 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 00:45:59 by bryanvalcas      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int			open_edit(t_data *data)
 		ft_fprintf(E_FERR, S_ERR);
 		return (ERROR);
 	}
+	EDIT_ = FALSE;
 	return (TRUE);
 }
 
@@ -36,6 +37,7 @@ int			open_file(t_data *data)
 		close(data->fd);
 		return (ERROR);
 	}
+	FILE = FALSE;
 	close(data->fd);
 	return (TRUE);
 }

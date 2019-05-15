@@ -6,7 +6,7 @@
 /*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:14:15 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 00:43:39 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 00:48:17 by bryanvalcas      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,26 @@ int			pars(t_data *data)
 	data->I = -1;
 	while (++data->I < data->len_split)
 	{
-		printf("%-10s FLAG_O[%d] EDIT_[%d]\n", SPLIT[data->I], FLAG_O[EDIT], EDIT_);
-		if (OPT == TRUE)// OPT TRUE OUI
+		if (OPT == TRUE)
 			if (check_option(data) == ERROR)
 				return (ERROR);
-		printf("%-10s FLAG_O[%d] EDIT_[%d]\n", SPLIT[data->I], FLAG_O[EDIT], EDIT_);
-		if (OPT == FALSE)// OPT TRUE NON
+		if (FLAG_O[HELP])
+			return (print_msg(data, FLAG_O[HELP]));
+		else if (FLAG_O[PATTERN])
+			return (print_msg(data, FLAG_O[PATTERN]));
+		if (EDIT_ == ERROR)
+			if (open_edit(data) == ERROR)
+				return (ERROR);
+		if (OPT == FALSE)
 			if (check_no_option(data) == ERROR)
 				return (ERROR);
-		printf("%-10s FLAG_O[%d] EDIT_[%d]\n", SPLIT[data->I], FLAG_O[EDIT], EDIT_);
 	}
 	return (TRUE);
 }
 
 int			check_option(t_data *data)
 {
-	if (ft_is_option(SPLIT[data->I], OPTION_))// CORRECT OUI
+	if (ft_is_option(SPLIT[data->I], OPTION_))
 	{
 		if (active_option(data, 0, 0) == ERROR)
 			return (ERROR);
@@ -53,16 +57,8 @@ int			check_option(t_data *data)
 
 int			check_no_option(t_data *data)
 {
-	if (FLAG_O[HELP])
-		return (print_msg(data, FLAG_O[HELP]));
-	else if (FLAG_O[PATTERN])
-		return (print_msg(data, FLAG_O[PATTERN]));
-	if (EDIT_ == ERROR)
-	{
-		EDIT_ = FALSE;
-		if (open_edit(data) == ERROR)
-			return (ERROR);
-	}
+
+
 	if (ft_is_option(SPLIT[data->I], FILE_OP) && FILE == FALSE)
 	{
 		if (active_no_option(data, 0) == ERROR)
@@ -72,14 +68,11 @@ int			check_no_option(t_data *data)
 	{
 		if (open_file(data) == ERROR)
 			return (ERROR);
-		FILE = FALSE;
 	}
 	else if (ft_number_ok(SPLIT[data->I]))
-	{
-		ft_printf("%s\n", SPLIT[data->I]);
 		data->tab = intsplit(data->tab, SPLIT[data->I], ' ');
-	}
-	else if (ft_is_option(SPLIT[data->I], OPTION_) || SPLIT[data->I][0] != '-')
+	else if (ft_is_option(SPLIT[data->I], OPTION_)
+		|| SPLIT[data->I][0] != '-')
 		return (error_val(data));
 	else
 		return (error_arg(data));
