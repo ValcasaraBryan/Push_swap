@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:15:57 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:44:15 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void		init_data(t_data *data, int ac, char **av)
 	data->index_split = -1;
 	data->len = ac;
 	data->len_split = FALSE;
+	data->ope = NULL;
 	data->a = NULL;
 	data->b = NULL;
 	data->fd = -1;
@@ -51,6 +52,21 @@ int			print_list(t_data *data, t_val *head)
 	ft_fprintf("%14p <-- %14p                    | %d\n",
 		S_STD, head->prev, head, head->val);
 	return (TRUE);
+}
+
+int			print_ope(t_data *data)
+{
+	t_ope	*tmp;
+	
+	tmp = data->ope;
+	if (!tmp)
+		return (0);
+	while (tmp)
+	{
+		ft_printf("%s\n", tmp->ope);
+		tmp = tmp->next;
+	}
+	return (1);
 }
 
 int			verbose(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:16:19 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:43:49 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int			checker(t_data *data)
 
 	if (data->len <= 1)
 		return (ERROR);
+	if (!(read_enter(data)))
+		return (FALSE);
 	while (++data->index < data->len)
 	{
 		if (!(data->split = ft_strsplit(data->av[data->index], ' ')))
@@ -33,6 +35,8 @@ int			checker(t_data *data)
 	if (error(data) == ERROR)
 		return (ERROR);
 	if (!(print_list(data, data->a)))
+		return (FALSE);
+	if (!(print_ope(data)))
 		return (FALSE);
 	return (TRUE);
 }

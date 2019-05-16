@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:16:42 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:44:04 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ typedef struct		s_val
 	struct s_val	*next;
 }					t_val;
 
+typedef struct		s_ope
+{
+	char			*ope;
+	struct s_ope	*next;
+}					t_ope;
+
 typedef struct		s_data
 {
 	char			**av;
@@ -73,6 +79,7 @@ typedef struct		s_data
 	int				index_split;
 	int				len;
 	int				len_split;
+	t_ope			*ope;
 	t_val			*a;
 	t_val			*b;
 	int				option[LEN_OPTION];
@@ -134,7 +141,12 @@ void				print_arg(char *str, int val);
 */
 void				init_data(t_data *data, int ac, char **av);
 int					print_list(t_data *data, t_val *head);
+int					print_ope(t_data *data);
 int					verbose(t_data *data);
+/*
+**					read_enter.c
+*/
+int					read_enter(t_data *data);
 
 t_val				*intsplit(t_val *split, const char *s, char c);
 void				erase_list(t_val **old);

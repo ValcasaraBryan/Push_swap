@@ -6,7 +6,8 @@ arg =
 
 SRC = srcs/%.c
 
-OBJ_CHECKER =	objets/check_arg.o\
+OBJ_CHECKER =	objets/read_enter.o\
+				objets/check_arg.o\
 				objets/checker.o\
 				objets/error.o\
 				objets/files.o\
