@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:14:15 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 00:48:17 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 11:51:21 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ int			check_option(t_data *data)
 		if (active_option(data, 0, 0) == ERROR)
 			return (ERROR);
 	}
-	else if (EDIT_ == TRUE)
-	{
-		data->edit = ft_strdup(SPLIT[data->I]);
-		EDIT_ = ERROR;
-	}
 	else if (!ft_is_option(SPLIT[data->I], OPTION_)
 		&& !ft_is_option(SPLIT[data->I], FILE_OP)
 			&& SPLIT[data->I][0] == '-')
 		return (error_arg(data));
+	else if (EDIT_ == TRUE && !ft_is_option(SPLIT[data->I], FILE_OP))
+	{
+		data->edit = ft_strdup(SPLIT[data->I]);
+		EDIT_ = ERROR;
+	}
 	else
 		OPT = FALSE;
 	return (TRUE);
