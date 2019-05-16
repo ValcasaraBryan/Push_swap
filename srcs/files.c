@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:17:05 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:10:12 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:17:34 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			open_file(t_data *data)
 	}
 	if (take_file(data) == ERROR)
 	{
-		erase_list(&data->tab);
+		erase_list(&data->a);
 		close(data->fd);
 		return (ERROR);
 	}
@@ -73,7 +73,7 @@ int			split_file(t_data *data, char *line)
 	while (tab[++i])
 	{
 		if (ft_number_ok(tab[i]))
-			data->tab = intsplit(data->tab, tab[i], ' ');
+			data->a = intsplit(data->a, tab[i], ' ');
 		else
 		{
 			ft_fprintf(MSG_ERR, S_ERR);

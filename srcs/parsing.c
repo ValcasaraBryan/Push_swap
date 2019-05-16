@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:14:15 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:06:03 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:17:53 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int			check_no_option(t_data *data)
 	}
 	else if (ft_number_ok(SPLIT[data->I]))
 	{
-		if (!(data->tab = intsplit(data->tab, SPLIT[data->I], ' ')))
+		if (!(data->a = intsplit(data->a, SPLIT[data->I], ' ')))
 			return (FALSE);
 	}
 	else if (ft_is_option(SPLIT[data->I], OPTION_)

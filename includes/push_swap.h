@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 14:28:14 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:16:42 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ typedef struct		s_data
 	int				index_split;
 	int				len;
 	int				len_split;
-	t_val			*tab;
+	t_val			*a;
+	t_val			*b;
 	int				option[LEN_OPTION];
 	int				fd;
 	int				output;
@@ -117,6 +118,7 @@ void				print_patern_three(t_data *data);
 /*
 **					error.c
 */
+int					error(t_data *data);
 int					error_val(t_data *data);
 int					error_arg(t_data *data);
 int					error_file(t_data *data);

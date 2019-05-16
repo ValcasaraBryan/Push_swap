@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:09:20 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:16:19 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int			checker(t_data *data)
 	}
 	if (error(data) == ERROR)
 		return (ERROR);
-	if (!(print_list(data, data->tab)))
+	if (!(print_list(data, data->a)))
 		return (FALSE);
 	return (TRUE);
 }

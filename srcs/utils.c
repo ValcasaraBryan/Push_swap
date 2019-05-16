@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:10:24 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:15:57 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void		init_data(t_data *data, int ac, char **av)
 	data->index_split = -1;
 	data->len = ac;
 	data->len_split = FALSE;
-	data->tab = NULL;
+	data->a = NULL;
+	data->b = NULL;
 	data->fd = -1;
 	data->output = -1;
 	data->edit = NULL;
@@ -36,7 +37,7 @@ void		init_data(t_data *data, int ac, char **av)
 
 int			print_list(t_data *data, t_val *head)
 {
-	head = data->tab;
+	head = data->a;
 	if (!head)
 		return (FALSE);
 	if (head->prev)
@@ -60,7 +61,8 @@ int			verbose(t_data *data)
 
 void		erase_all(t_data *data)
 {
-	erase_list(&data->tab);
+	erase_list(&data->a);
+	erase_list(&data->b);
 	free_tab_str(&data->split);
 	if (data->edit)
 	{
