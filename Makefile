@@ -6,15 +6,17 @@ arg =
 
 SRC = srcs/%.c
 
-OBJ_CHECKER =	objets/read_enter.o\
-				objets/check_arg.o\
+OBJ_CHECKER =	objets/check_arg.o\
+				objets/check_ope.o\
 				objets/checker.o\
 				objets/error.o\
 				objets/files.o\
 				objets/ft_intsplit.o\
+				objets/operation.o\
 				objets/parsing.o\
 				objets/print_messages.o\
 				objets/print_pattern.o\
+				objets/read_enter.o\
 				objets/utils.o
 OBJ_PUSH = objets/push_swap.o
 

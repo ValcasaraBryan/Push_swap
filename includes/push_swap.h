@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:44:04 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 16:49:07 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@
 # define SPLIT		data->split
 # define I			index_split
 
+# define SA			0
+# define SB			1
+# define SS			2
+# define PA			3
+# define PB			4
+# define RA			5
+# define RB			6
+# define RR			7
+# define RRA		8
+# define RRB		9
+# define RRR		10
+
 # define MSG		-2
 # define ERROR		-1
 # define S_ERR		2
@@ -32,6 +44,7 @@
 # define TRUE		1
 # define FALSE		0
 # define LEN_OPTION	4
+# define LEN_OPE	11
 # define LEN_PRINT	2
 # define OPTION_	"vhpe"
 # define FILE_OP	"f"
@@ -83,6 +96,7 @@ typedef struct		s_data
 	t_val			*a;
 	t_val			*b;
 	int				option[LEN_OPTION];
+	char			*operation[LEN_OPE];
 	int				fd;
 	int				output;
 	char			*edit;
@@ -146,10 +160,24 @@ int					verbose(t_data *data);
 /*
 **					read_enter.c
 */
+t_ope				*new_ope(char *str);
+void				add_ope(t_ope **old, char *str);
+void				erase_ope(t_data *data);
 int					read_enter(t_data *data);
-
+/*
+**					check_ope.c
+*/
+int					init_ope(t_data *data);
+int					check_ope(t_data *data, char *str);
+/*
+**					ft_intsplit.c
+*/
 t_val				*intsplit(t_val *split, const char *s, char c);
 void				erase_list(t_val **old);
 void				erase_all(t_data *data);
-
+/*
+**					operation.c
+*/
+void				swap(void **a, void **b);
+int					sa(t_data *data);
 #endif
