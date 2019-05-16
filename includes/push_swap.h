@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/15 21:56:53 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 14:28:14 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct		s_data
 **					in main
 **						in checker
 */
-int					checker(int ac, char **av);
+int					checker(t_data *data);
 /*
 **					parsing.c
 */
@@ -131,10 +131,11 @@ void				print_arg(char *str, int val);
 **					utils.c
 */
 void				init_data(t_data *data, int ac, char **av);
-void				print_list(t_data *data, t_val *head);
+int					print_list(t_data *data, t_val *head);
 int					verbose(t_data *data);
 
 t_val				*intsplit(t_val *split, const char *s, char c);
 void				erase_list(t_val **old);
+void				erase_all(t_data *data);
 
 #endif

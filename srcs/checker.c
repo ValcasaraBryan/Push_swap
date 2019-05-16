@@ -3,55 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:00 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 00:35:26 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 14:29:43 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int			checker(int ac, char **av)
+int			checker(t_data *data)
 {
-	t_data	data;
-
-	init_data(&data, ac, av);
-	if (data.len <= 1)// ARG NO
+	if (data->len <= 1)
 		return (ERROR);
-	while (data.index < data.len) // ARG OUI
+	while (data->index < data->len)
 	{
-		if (!(data.split = ft_strsplit(data.av[data.index], ' ')))
+		if (!(data->split = ft_strsplit(data->av[data->index], ' ')))
 			return (ERROR);
-		if (!(data.len_split = ft_len_tab_str(data.split)))
-			return (error_arg(&data));
-		if (pars(&data) == ERROR)
+		if (!(data->len_split = ft_len_tab_str(data->split)))
+			return (error_arg(data));
+		if (pars(data) == ERROR)
 			return (ERROR);
-		free_tab_str(&data.split);
-		data.index++;
+		free_tab_str(&data->split);
+		data->index++;
 	}
-	if (data.option[HELP])
-		return (print_msg(&data, data.option[HELP]));
-	if (data.option[PATTERN])
-		return (print_msg(&data, data.option[PATTERN]));
-	if (data.no_edit == TRUE)
-		return (error_edit(&data));
-	if (data.no_file == TRUE)
-		return (error_file(&data));
-	print_list(&data, data.tab);
-	erase_list(&data.tab);
+	if (data->option[HELP])
+		return (print_msg(data, data->option[HELP]));
+	if (data->option[PATTERN])
+		return (print_msg(data, data->option[PATTERN]));
+	if (data->no_edit == TRUE)
+		return (error_edit(data));
+	if (data->no_file == TRUE)
+		return (error_file(data));
+	
+	if (!(print_list(data, data->tab)))
+		return (FALSE);
 	return (TRUE);
 }
 
 int			main(int argc, char **argv)
 {
+	t_data	data;
 	int		ret;
 
-	if ((ret = checker(argc, argv)) == ERROR)
-		return (FALSE);
+	init_data(&data, argc, argv);
+	if ((ret = checker(&data)) == ERROR);
 	else if (ret == FALSE)
 		ft_fprintf("KO\n", S_STD);
 	else if (ret == TRUE)
 		ft_fprintf("OK\n", S_STD);
+	erase_all(&data);
 	return (FALSE);
 }

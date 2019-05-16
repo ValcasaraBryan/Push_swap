@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/15 21:45:22 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 14:28:58 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ void		init_data(t_data *data, int ac, char **av)
 		FLAG_O[i] = FALSE;
 }
 
-void		print_list(t_data *data, t_val *head)
+int			print_list(t_data *data, t_val *head)
 {
 	head = data->tab;
 	if (!head)
-		return ;
+		return (FALSE);
 	if (head->prev)
 		head->prev->next = NULL;
 	while (head->next)
@@ -49,10 +49,22 @@ void		print_list(t_data *data, t_val *head)
 	}
 	ft_fprintf("%14p <-- %14p                    | %d\n",
 		S_STD, head->prev, head, head->val);
+	return (TRUE);
 }
 
 int			verbose(t_data *data)
 {
 	(void)data;
 	return (TRUE);
+}
+
+void		erase_all(t_data *data)
+{
+	erase_list(&data->tab);
+	free_tab_str(&data->split);
+	if (data->edit)
+	{
+		free(data->edit);
+		data->edit = NULL;
+	}
 }
