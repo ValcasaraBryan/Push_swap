@@ -54,7 +54,7 @@ $(PUSH) : $(OBJ_PUSH)
 
 
 exe_check : all $(CHECK)
-	@./$(CHECK) $(arg)
+	@./$(CHECK) $(arg) < test
 
 exe_push : all $(PUSH)
 	@./$(PUSH) $(arg)

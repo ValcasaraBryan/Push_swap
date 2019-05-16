@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 16:50:58 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 18:47:43 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,30 @@ void		init_data(t_data *data, int ac, char **av)
 	init_ope(data);
 }
 
-int			print_list(t_data *data, t_val *head)
+int			print_list(t_data *data)
 {
+	t_val	*head;
+	t_val	*tmp;
+
+	if (!data->a->next)
+	{
+		ft_fprintf("%d\n", S_STD, data->a->val);
+		return (TRUE);
+	}
 	head = data->a;
-	if (!head)
-		return (FALSE);
-	if (head->prev)
-		head->prev->next = NULL;
+	tmp = data->a->prev;
 	while (head->next)
 	{
 		// ft_fprintf("%14p <-- %14p --> %14p | %d\n",
 			// S_STD, head->prev, head, head->next, head->val);
 		ft_fprintf("%d\n", S_STD, head->val);
+		if (head == tmp)
+			break ;
 		head = head->next;
 	}
 	// ft_fprintf("%14p <-- %14p                    | %d\n",
 		// S_STD, head->prev, head, head->val);
-		ft_fprintf("%d\n", S_STD, head->val);
+		// ft_fprintf("%d\n", S_STD, head->val);
 	return (TRUE);
 }
 

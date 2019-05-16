@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 16:49:07 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 18:33:42 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void				print_arg(char *str, int val);
 **					utils.c
 */
 void				init_data(t_data *data, int ac, char **av);
-int					print_list(t_data *data, t_val *head);
+int					print_list(t_data *data);
 int					print_ope(t_data *data);
 int					verbose(t_data *data);
 /*
@@ -179,5 +179,5 @@ void				erase_all(t_data *data);
 **					operation.c
 */
 void				swap(void **a, void **b);
-int					sa(t_data *data);
+int					sa(t_val *a, t_val *b);
 #endif
