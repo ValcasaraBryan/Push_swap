@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:14:15 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 14:26:31 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:06:03 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int			pars(t_data *data)
 {
+	int		ret;
+
 	data->I = -1;
+	ret = TRUE;
 	while (++data->I < data->len_split)
 	{
 		if (OPT == TRUE)
@@ -28,8 +31,10 @@ int			pars(t_data *data)
 			if (open_edit(data) == ERROR)
 				return (ERROR);
 		if (OPT == FALSE)
-			if (check_no_option(data) == ERROR)
+			if ((ret = check_no_option(data)) == ERROR)
 				return (ERROR);
+		if (ret == FALSE)
+			return (FALSE);
 	}
 	return (TRUE);
 }
@@ -57,8 +62,6 @@ int			check_option(t_data *data)
 
 int			check_no_option(t_data *data)
 {
-
-
 	if (ft_is_option(SPLIT[data->I], FILE_OP) && FILE == FALSE)
 	{
 		if (active_no_option(data, 0) == ERROR)
@@ -70,7 +73,10 @@ int			check_no_option(t_data *data)
 			return (ERROR);
 	}
 	else if (ft_number_ok(SPLIT[data->I]))
-		data->tab = intsplit(data->tab, SPLIT[data->I], ' ');
+	{
+		if (!(data->tab = intsplit(data->tab, SPLIT[data->I], ' ')))
+			return (FALSE);
+	}
 	else if (ft_is_option(SPLIT[data->I], OPTION_)
 		|| SPLIT[data->I][0] != '-')
 		return (error_val(data));

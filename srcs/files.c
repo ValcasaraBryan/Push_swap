@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bryanvalcasara <bryanvalcasara@student.    +#+  +:+       +#+        */
+/*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:17:05 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 00:45:59 by bryanvalcas      ###   ########.fr       */
+/*   Updated: 2019/05/16 15:10:12 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

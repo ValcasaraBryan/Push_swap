@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 14:28:58 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:10:24 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		init_data(t_data *data, int ac, char **av)
 	data->no_file = FALSE;
 	data->no_edit = FALSE;
 	data->no_option = TRUE;
-	data->index = TRUE;
+	data->index = 0;
 	data->index_split = -1;
 	data->len = ac;
 	data->len_split = FALSE;

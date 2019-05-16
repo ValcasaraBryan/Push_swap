@@ -6,11 +6,24 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:26:10 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 14:17:38 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/16 15:09:47 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int			error(t_data *data)
+{
+	if (FLAG_O[HELP])
+		return (print_msg(data, FLAG_O[HELP]));
+	if (FLAG_O[PATTERN])
+		return (print_msg(data, FLAG_O[PATTERN]));
+	if (EDIT_ == TRUE)
+		return (error_edit(data));
+	if (FILE == TRUE)
+		return (error_file(data));
+	return (TRUE);
+}
 
 int			error_val(t_data *data)
 {
