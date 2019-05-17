@@ -73,4 +73,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY = objets exe clean fclean re
+.PHONY: objets exe clean fclean re
