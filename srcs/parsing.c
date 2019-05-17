@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:14:15 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:17:53 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/17 14:20:08 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ int			check_no_option(t_data *data)
 		if (active_no_option(data, 0) == ERROR)
 			return (ERROR);
 	}
+	else if (!ft_is_option(SPLIT[data->I], OPTION_)
+		&& !ft_is_option(SPLIT[data->I], FILE_OP)
+			&& SPLIT[data->I][0] == '-')
+		return (error_arg(data));
 	else if (FILE == TRUE)
 	{
 		if (open_file(data) == ERROR)

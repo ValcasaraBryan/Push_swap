@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:31:02 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 18:47:43 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/17 14:03:49 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int			print_list(t_data *data)
 	t_val	*head;
 	t_val	*tmp;
 
+	if (!data->a)
+		return (FALSE);
 	if (!data->a->next)
 	{
 		ft_fprintf("%d\n", S_STD, data->a->val);
@@ -53,7 +55,7 @@ int			print_list(t_data *data)
 	{
 		// ft_fprintf("%14p <-- %14p --> %14p | %d\n",
 			// S_STD, head->prev, head, head->next, head->val);
-		ft_fprintf("%d\n", S_STD, head->val);
+		ft_fprintf("%d\t\n", S_STD, head->val);
 		if (head == tmp)
 			break ;
 		head = head->next;

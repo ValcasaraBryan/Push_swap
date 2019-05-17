@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:37:03 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 18:33:42 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/17 14:16:58 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,5 +179,5 @@ void				erase_all(t_data *data);
 **					operation.c
 */
 void				swap(void **a, void **b);
-int					sa(t_val *a, t_val *b);
+int					s_ab(t_val **data, t_val *a, t_val *b);
 #endif

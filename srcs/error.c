@@ -6,7 +6,7 @@
 /*   By: brvalcas <brvalcas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 16:26:10 by brvalcas          #+#    #+#             */
-/*   Updated: 2019/05/16 15:09:47 by brvalcas         ###   ########.fr       */
+/*   Updated: 2019/05/17 13:28:36 by brvalcas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int			error(t_data *data)
 		return (error_edit(data));
 	if (FILE == TRUE)
 		return (error_file(data));
+	if (!data->a)
+		return (ERROR);
 	return (TRUE);
 }
 
